@@ -1,0 +1,1333 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Noto Sans Lao", "Inter", sans-serif;
+    background: #080808;
+    color: #f5f5f5;
+    line-height: 1.5;
+    overflow-x: hidden;
+    position: relative;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img,
+video {
+    width: 100%;
+    display: block;
+}
+
+
+/* =========================================================
+   GALAXY BACKGROUND
+========================================================= */
+
+#galaxyCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: block;
+    background: #000;
+}
+
+
+/* =========================================================
+   CONTENT ABOVE GALAXY
+========================================================= */
+
+.hero,
+.intro,
+.works,
+.services,
+.about,
+.cta,
+.contact,
+footer {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    padding: 18px 5vw;
+
+    background: rgba(8, 8, 8, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    white-space: nowrap;
+}
+
+/* ขนาดโลโก้ — ปรับตรงนี้ได้เลย */
+
+.logo {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 32px;
+}
+
+.navbar nav a {
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: #999;
+    transition: 0.3s;
+}
+
+.navbar nav a:hover {
+    color: white;
+}
+
+.nav-button {
+    padding: 10px 18px;
+    border: 1px solid #444;
+
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.nav-button:hover {
+    background: white;
+    color: black;
+    border-color: white;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 100vh;
+    padding: 180px 7vw 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5vw;
+
+    position: relative;
+    overflow: hidden;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Hero light */
+
+.hero::before {
+    content: "";
+    position: absolute;
+
+    width: 800px;
+    height: 800px;
+
+    right: -300px;
+    top: -300px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.06),
+            transparent 65%
+        );
+
+    filter: blur(40px);
+
+    animation: heroGlow 12s ease-in-out infinite alternate;
+
+    pointer-events: none;
+}
+
+@keyframes heroGlow {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.25) translate(-100px,100px);
+    }
+}
+
+.hero-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 1200px;
+    position: relative;
+    z-index: 2;
+}
+
+.eyebrow,
+.section-label {
+    color: #777;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(48px, 7.5vw, 120px);
+    line-height: 0.88;
+    letter-spacing: -7px;
+    font-weight: 800;
+
+    animation: heroText 1.2s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes heroText {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+.hero h1 span,
+h2 span {
+    color: #666;
+}
+
+.hero-description {
+    max-width: 500px;
+    margin-top: 40px;
+    color: #999;
+    font-size: 16px;
+
+    animation: fadeUp 1s 0.3s both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 35px;
+
+    animation: fadeUp 1s 0.5s both;
+}
+
+.button {
+    display: inline-block;
+    padding: 15px 24px;
+
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+
+    transition: 0.35s;
+    position: relative;
+    overflow: hidden;
+}
+
+.button-light {
+    background: white;
+    color: black;
+}
+
+.button-light:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(255,255,255,0.15);
+}
+
+.button-outline {
+    border: 1px solid #444;
+}
+
+.button-outline:hover {
+    background: white;
+    color: black;
+    border-color: white;
+    transform: translateY(-4px);
+}
+
+.hero-scroll {
+    position: absolute;
+    bottom: 35px;
+    right: 7vw;
+
+    color: #555;
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%,100% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(8px);
+    }
+}
+
+
+/* =========================================================
+   HERO LOGO (ข้างหัวข้อ)
+========================================================= */
+
+.hero-logo {
+
+    /* ปรับความโค้งมุมโลโก้ตรงนี้ (50% = วงกลม) */
+    --logo-radius: 32px;
+
+    position: relative;
+    z-index: 2;
+
+    flex-shrink: 0;
+
+    width: clamp(220px, 27vw, 420px);
+    aspect-ratio: 1 / 1;
+
+    animation: logoFloat 6s ease-in-out infinite;
+}
+
+/* แสงฟุ้งด้านหลัง */
+
+.hero-logo::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.14),
+            transparent 65%
+        );
+
+    filter: blur(30px);
+
+    z-index: -1;
+
+    animation: logoGlow 5s ease-in-out infinite alternate;
+}
+
+/* กรอบวงนอก */
+
+.hero-logo::after {
+    content: "";
+    position: absolute;
+    inset: -18px;
+
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: calc(var(--logo-radius) + 18px);
+
+    pointer-events: none;
+
+    animation: ringPulse 4s ease-in-out infinite;
+}
+
+.hero-logo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: var(--logo-radius);
+    border: 1px solid rgba(255,255,255,0.18);
+
+    animation: fadeUp 1.2s 0.4s both;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.6),
+        0 0 60px rgba(255,255,255,0.08);
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-16px);
+    }
+}
+
+@keyframes logoGlow {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes ringPulse {
+    0%, 100% {
+        opacity: 0.35;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro {
+    padding: 160px 7vw;
+    max-width: 1200px;
+    position: relative;
+}
+
+.intro h2 {
+    font-size: clamp(45px, 7vw, 95px);
+    line-height: 0.95;
+    letter-spacing: -4px;
+}
+
+.intro-text {
+    max-width: 600px;
+    margin-top: 45px;
+    color: #888;
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   WORKS
+========================================================= */
+
+.works {
+    padding: 100px 5vw;
+    position: relative;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: clamp(45px, 7vw, 90px);
+    line-height: 0.9;
+    letter-spacing: -4px;
+}
+
+.section-description {
+    max-width: 300px;
+    color: #777;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.filter {
+    background: transparent;
+    border: 1px solid #333;
+    color: #777;
+
+    padding: 10px 18px;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 1px;
+
+    transition: 0.3s;
+}
+
+.filter:hover,
+.filter.active {
+    background: white;
+    color: black;
+    border-color: white;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   WORK GRID
+========================================================= */
+
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.work-card {
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s ease;
+}
+
+.video-container {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+
+    aspect-ratio: 9 / 16;
+
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+
+    transition:
+        transform 0.5s ease,
+        box-shadow 0.5s ease,
+        border-color 0.5s ease;
+}
+
+/* Video glow */
+
+.video-container::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.15),
+            transparent
+        );
+
+    transform: translateX(-120%);
+    transition: 0.8s;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.work-card:hover .video-container::before {
+    transform: translateX(120%);
+}
+
+.work-card:hover .video-container {
+    transform: translateY(-10px) scale(1.015);
+    border-color: rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.65),
+        0 0 50px rgba(255,255,255,0.04);
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    transition:
+        transform 0.8s ease,
+        filter 0.8s ease;
+
+    filter: brightness(0.75) saturate(0.85);
+}
+
+.work-card:hover video {
+    transform: scale(1.06);
+    filter: brightness(1) saturate(1.05);
+}
+
+
+/* =========================================================
+   IMAGE WORKS (ผลงานแบบรูปภาพ)
+========================================================= */
+
+/* สัดส่วนรูป: เปลี่ยนได้ เช่น 1 / 1 (จัตุรัส), 4 / 5, 16 / 9 */
+
+.image-container {
+    aspect-ratio: 4 / 5;
+}
+
+.video-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    transition:
+        transform 0.8s ease,
+        filter 0.8s ease;
+
+    filter: brightness(0.75) saturate(0.85);
+}
+
+.work-card:hover .video-container img {
+    transform: scale(1.06);
+    filter: brightness(1) saturate(1.05);
+}
+
+
+.work-info {
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.work-info h3 {
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.work-info p {
+    margin-top: 5px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: #666;
+}
+
+.work-info > span {
+    color: #555;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SERVICES
+========================================================= */
+
+.services {
+    padding: 150px 7vw;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,0.025),
+            rgba(255,255,255,0.01)
+        );
+
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.services h2 {
+    font-size: clamp(50px, 8vw, 110px);
+    line-height: 0.9;
+    letter-spacing: -5px;
+}
+
+.service-list {
+    margin-top: 80px;
+}
+
+.service-item {
+    border-top: 1px solid #333;
+    padding: 35px 0;
+
+    display: grid;
+    grid-template-columns: 80px 1fr 50px;
+    gap: 30px;
+
+    align-items: start;
+    transition: 0.4s;
+}
+
+.service-item:last-child {
+    border-bottom: 1px solid #333;
+}
+
+.service-item:hover {
+    padding-left: 15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.035),
+            transparent
+        );
+}
+
+.service-item > span {
+    color: #555;
+    font-size: 11px;
+}
+
+.service-item h3 {
+    font-size: 25px;
+    letter-spacing: -1px;
+}
+
+.service-item p {
+    max-width: 500px;
+    margin-top: 10px;
+    color: #777;
+    font-size: 13px;
+}
+
+.service-item strong {
+    font-size: 20px;
+    color: #666;
+}
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.about {
+    padding: 150px 7vw;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10vw;
+
+    align-items: center;
+}
+
+.about-image {
+    overflow: hidden;
+    position: relative;
+}
+
+.about-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.08),
+            transparent 40%
+        );
+
+    pointer-events: none;
+}
+
+.about-image img {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: 0.8s ease;
+}
+
+.about-image:hover img {
+    transform: scale(1.04);
+    filter: grayscale(20%);
+}
+
+.about-content h2 {
+    font-size: clamp(45px, 6vw, 80px);
+    line-height: 0.9;
+    letter-spacing: -4px;
+}
+
+.about-content > p:not(.section-label) {
+    color: #888;
+    max-width: 500px;
+    margin-top: 30px;
+    font-size: 15px;
+}
+
+.text-link {
+    display: inline-block;
+    margin-top: 40px;
+
+    border-bottom: 1px solid #777;
+    padding-bottom: 5px;
+
+    font-size: 10px;
+    letter-spacing: 1.5px;
+
+    transition: 0.3s;
+}
+
+.text-link:hover {
+    color: white;
+    border-color: white;
+    padding-left: 8px;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+    padding: 180px 7vw;
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(0,0,0,0.08),
+            transparent 55%
+        ),
+        #f2f2f2;
+
+    color: #111;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.cta::before {
+    content: "";
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,0,0,0.05),
+            transparent 70%
+        );
+}
+
+.cta .section-label {
+    color: #777;
+    position: relative;
+}
+
+.cta h2 {
+    font-size: clamp(60px, 10vw, 140px);
+    line-height: 0.85;
+    letter-spacing: -7px;
+    position: relative;
+}
+
+.cta h2 span {
+    color: #888;
+}
+
+.cta .button {
+    margin-top: 50px;
+    background: #111;
+    color: white;
+    position: relative;
+}
+
+.cta .button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact {
+    padding: 150px 7vw;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10vw;
+}
+
+.contact h2 {
+    font-size: clamp(70px, 10vw, 130px);
+    line-height: 0.8;
+    letter-spacing: -6px;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: #777;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #333;
+    color: white;
+
+    padding: 13px 0;
+    outline: none;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: white;
+    padding-left: 8px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+select {
+    cursor: pointer;
+}
+
+select option {
+    background: #111;
+}
+
+.submit-button {
+    margin-top: 15px;
+    padding: 17px 30px;
+
+    background: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+
+    transition: 0.35s;
+}
+
+.submit-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(255,255,255,0.12);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    border-top: 1px solid #292929;
+    padding: 40px 5vw;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.footer-brand img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.social-links {
+    display: flex;
+    gap: 25px;
+}
+
+.social-links a,
+footer p {
+    color: #666;
+    font-size: 9px;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.social-links svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   SECTION LIGHT LINE
+========================================================= */
+
+section {
+    position: relative;
+}
+
+section::before {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: 8%;
+    right: 8%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.12),
+            transparent
+        );
+
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        padding: 14px 20px;
+    }
+
+    .logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .brand {
+        font-size: 12px;
+    }
+
+    .navbar nav {
+        display: none;
+    }
+
+    .nav-button {
+        padding: 9px 12px;
+    }
+
+    .hero {
+        padding: 150px 25px 80px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 70px;
+    }
+
+    .hero-logo {
+        width: 190px;
+        align-self: center;
+        --logo-radius: 26px;
+    }
+
+    .hero h1 {
+        font-size: 18vw;
+        letter-spacing: -4px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .intro,
+    .works,
+    .services,
+    .about,
+    .contact {
+        padding: 90px 25px;
+    }
+
+    .intro h2,
+    .services h2,
+    .about-content h2,
+    .cta h2,
+    .contact h2 {
+        letter-spacing: -3px;
+    }
+
+    .section-header {
+        display: block;
+    }
+
+    .section-description {
+        margin-top: 25px;
+    }
+
+    .filters {
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+    .filter {
+        flex-shrink: 0;
+    }
+
+    .work-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .services {
+        padding-top: 100px;
+    }
+
+    .service-item {
+        grid-template-columns: 35px 1fr;
+        gap: 15px;
+    }
+
+    .service-item strong {
+        display: none;
+    }
+
+    .service-item h3 {
+        font-size: 20px;
+    }
+
+    .about {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .contact {
+        grid-template-columns: 1fr;
+        gap: 70px;
+    }
+
+    .cta {
+        padding: 110px 25px;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .social-links {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .hero h1 {
+        font-size: 17vw;
+        letter-spacing: -3px;
+    }
+
+    .work-grid {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .video-container {
+        border-radius: 5px;
+    }
+
+    .hero-scroll {
+        display: none;
+    }
+
+    .cta h2 {
+        font-size: 18vw;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* =========================================================
+   UPDATE: INTRO IMAGE + ABOUT IMAGE (สี ไม่มี hover)
+   (บล็อกนี้อยู่ท้ายไฟล์ เพื่อให้ override กฎด้านบน)
+========================================================= */
+
+/* ---------- INTRO: ข้อความซ้าย / รูปขวา ---------- */
+
+.intro {
+    max-width: none;
+
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 6vw;
+
+    align-items: center;
+}
+
+.intro h2 {
+    font-size: clamp(40px, 5.5vw, 78px);
+}
+
+.intro-image {
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.intro-image img {
+    /* สัดส่วนรูป: เปลี่ยนได้ เช่น 1 / 1, 3 / 4, 16 / 9 */
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+}
+
+
+/* ---------- ABOUT: รูปทีมเป็นสีจริง ไม่มี hover ---------- */
+
+.about-image::after {
+    display: none;
+}
+
+.about-image img {
+    filter: none;
+    transition: none;
+}
+
+.about-image:hover img {
+    transform: none;
+    filter: none;
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 768px) {
+
+    .intro {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .intro-image img {
+        aspect-ratio: 1 / 1;
+    }
+}

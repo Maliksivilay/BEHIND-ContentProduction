@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#060607">
+
+    <title>BEHIND-ເບື້ອງຫຼັງ — ສະຕູດິໂອຕັດຕໍ່ວິດີໂອ</title>
+
+    <meta name="description"
+          content="ຮັບຕັດຕໍ່ວິດີໂອແບບມືອາຊີບ ສຳລັບ TikTok, Reels ແລະ ສື່ສັງຄົມອອນລາຍ.">
+
+    <!-- เปิดโหมดแอนิเมชันหัวเว็บตั้งแต่ก่อนวาดหน้า (กันภาพกระตุก)
+         ถ้า script.js โหลดไม่สำเร็จ จะกลับเป็นเลย์เอาต์ธรรมดาให้เอง -->
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.add("js");
+            if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                root.classList.add("roll");
+                setTimeout(function () {
+                    if (!window.__heroReady) root.classList.remove("roll");
+                }, 3000);
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Lao:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<canvas id="galaxyCanvas"></canvas>
+
+<!-- =========================
+     NAVIGATION
+========================== -->
+
+<header class="navbar" id="navbar">
+
+    <a href="#top" class="brand">
+
+        <!-- =========================
+             PUT YOUR LOGO HERE
+        ========================== -->
+
+        <img src="Behind.jpeg"
+             alt="ໂລໂກ້ບໍລິສັດ"
+             class="logo">
+
+        <span>BEHIND-ເບື້ອງຫຼັງ</span>
+
+    </a>
+
+    <nav>
+        <a href="#works">ຜົນງານ</a>
+        <a href="#services">ບໍລິການ</a>
+        <a href="#about">ກ່ຽວກັບ</a>
+        <a href="#contact">ຕິດຕໍ່</a>
+    </nav>
+
+    <a href="#contact" class="nav-button">
+        ຕິດຕໍ່ສອບຖາມ
+    </a>
+
+</header>
+
+
+<!-- =========================
+     HERO
+     โลโก้เด้งเข้ามากลางจอ → เลื่อนลงแล้วค่อย ๆ จาง → ข้อความโผล่ขึ้นมา
+========================== -->
+
+<section class="hero" id="top">
+
+    <div class="hero-stage">
+
+        <div class="aurora" aria-hidden="true"><i></i><i></i></div>
+
+        <div class="hero-grid" aria-hidden="true"></div>
+
+
+        <!-- BIG LOGO -->
+
+        <div class="hero-logo">
+
+            <div class="hero-logo-pop">
+
+                <div class="hero-logo-float">
+
+                    <img src="Behind.jpeg"
+                         alt="ໂລໂກ້ BEHIND-ເບື້ອງຫຼັງ">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TEXT -->
+
+        <div class="hero-content">
+
+            <p class="eyebrow">
+                ສະຕູດິໂອຕັດຕໍ່ວິດີໂອ
+            </p>
+
+            <h1>
+                <span>All-in-One</span><br>
+                Content Production.
+            </h1>
+
+            <p class="hero-description">
+                ຕັດຕໍ່ວິດີໂອແບບມືອາຊີບ ສຳລັບ TikTok, Reels,
+                Shorts ແລະ ຄອນເທັ້ນໃນສື່ສັງຄົມອອນລາຍ.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#works" class="button button-light">
+                    ເບິ່ງຜົນງານຂອງເຮົາ
+                </a>
+
+                <a href="#contact" class="button button-outline">
+                    ຂໍໃບສະເໜີລາຄາ
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-scroll" aria-hidden="true">
+            <span class="mouse"></span>
+            ເລື່ອນລົງເພື່ອເບິ່ງ
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     INTRO
+========================== -->
+
+<section class="intro">
+
+    <div class="intro-content">
+
+        <p class="section-label">
+            ສິ່ງທີ່ເຮົາເຮັດ
+        </p>
+
+        <h2>
+            ຄອນເທັ້ນທີ່<br>
+            <span>ດຶງດູດຄວາມສົນໃຈ.</span>
+        </h2>
+
+        <p class="intro-text">
+            ເຮົາຊ່ວຍແບຣນ, ຄຣີເອເຕີ ແລະ ທຸລະກິດ ປ່ຽນວິດີໂອທຳມະດາ
+            ໃຫ້ກາຍເປັນຄອນເທັ້ນທີ່ໜ້າສົນໃຈ ອອກແບບມາເພື່ອ
+            ແພລັດຟອມສື່ສັງຄົມອອນລາຍໃນປັດຈຸບັນ.
+        </p>
+
+        <div class="chips">
+            <span class="chip">TikTok</span>
+            <span class="chip">Instagram Reels</span>
+            <span class="chip">YouTube Shorts</span>
+            <span class="chip">Facebook</span>
+        </div>
+
+    </div>
+
+
+    <!-- PUT YOUR INTRO IMAGE HERE
+         เปลี่ยนชื่อไฟล์ใน src ให้ตรงกับรูปของคุณ (วางไว้โฟลเดอร์เดียวกับ index.html) -->
+
+    <div class="intro-image">
+
+        <img src="Woman-live-streaming-in-a-train-station.jpg"
+             alt="ຮູບພາບປະກອບ">
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CLIENTS  (โลโก้ลูกค้าที่เคยทำให้)
+========================== -->
+
+<section class="clients" id="clients">
+
+    <div class="section-header">
+
+        <div>
+            <p class="section-label">
+                ລູກຄ້າຂອງເຮົາ
+            </p>
+
+            <h2>
+                ແບຣນທີ່<br>
+                <span>ໄວ້ວາງໃຈເຮົາ.</span>
+            </h2>
+        </div>
+
+        <p class="section-description">
+            ທຸລະກິດ ແລະ ແບຣນທີ່ເຄີຍຮ່ວມງານກັບເຮົາ.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         ใส่โลโก้ลูกค้า 36 ช่อง
+         - วางไฟล์ในโฟลเดอร์ clients/ ตั้งชื่อ client01.png ... client36.png
+           (หรือแก้ชื่อ/นามสกุลใน src ให้ตรงกับไฟล์จริง)
+         - ช่องไหนยังไม่มีรูป จะโชว์กรอบ "LOGO xx" ว่างไว้ให้
+         - เพิ่ม/ลดจำนวนได้ คัดลอก <div class="client"> ไปวางต่อ
+         - โลโก้ทั้งหมดโชว์นิ่ง ๆ เป็นตาราง เอาเมาส์ชี้แล้วจะขยายขึ้น
+    ====================================================== -->
+
+    <div class="clients-marquee">
+
+        <!-- ROW 1  (logo 01 - 12) -->
+
+        <div class="clients-row">
+
+            <div class="clients-track">
+
+                <div class="client">
+                    <img src="ANC.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 01"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 01</span>
+                </div>
+
+                <div class="client">
+                    <img src="BABY BRIGHT.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 02"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 02</span>
+                </div>
+
+                <div class="client">
+                    <img src="Banchit smoothies.png"
+                         alt="ໂລໂກ້ລູກຄ້າ 03"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 03</span>
+                </div>
+
+                <div class="client">
+                    <img src="Behind.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 04"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 04</span>
+                </div>
+
+                <div class="client">
+                    <img src="BONCHON.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 05"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 05</span>
+                </div>
+
+                <div class="client">
+                    <img src="CLEARMEN.png"
+                         alt="ໂລໂກ້ລູກຄ້າ 06"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 06</span>
+                </div>
+
+                <div class="client">
+                    <img src="clients/client07.png"
+                         alt="ໂລໂກ້ລູກຄ້າ 07"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 07</span>
+                </div>
+
+                <div class="client">
+                    <img src="CLOUDSTORE.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 08"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 08</span>
+                </div>
+
+                <div class="client">
+                    <img src="COLGATE.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 09"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 09</span>
+                </div>
+
+                <div class="client">
+                    <img src="COMCOM.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 10"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 10</span>
+                </div>
+
+                <div class="client">
+                    <img src="DANCE.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 11"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 11</span>
+                </div>
+
+                <div class="client">
+                    <img src="DEE LIGHT.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 12"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 12</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROW 2  (logo 13 - 24) -->
+
+        <div class="clients-row">
+
+            <div class="clients-track">
+
+                <div class="client">
+                    <img src="DVP LANGUAGE CENTOR.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 13"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 13</span>
+                </div>
+
+                <div class="client">
+                    <img src="FINFOODFUN.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 14"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 14</span>
+                </div>
+
+                <div class="client">
+                    <img src="GAGA.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 15"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 15</span>
+                </div>
+
+                <div class="client">
+                    <img src="GARNEIR.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 16"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 16</span>
+                </div>
+
+                <div class="client">
+                    <img src="GREEN LUANGPHABANG.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 17"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 17</span>
+                </div>
+
+                <div class="client">
+                    <img src="loc_around.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 18"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 18</span>
+                </div>
+
+                <div class="client">
+                    <img src="LOGOARTTOY.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 19"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 19</span>
+                </div>
+
+                <div class="client">
+                    <img src="MAKAME.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 20"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 20</span>
+                </div>
+
+                <div class="client">
+                    <img src="MNV.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 21"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 21</span>
+                </div>
+
+                <div class="client">
+                    <img src="SELECTION.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 22"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 22</span>
+                </div>
+
+                <div class="client">
+                    <img src="MUM KUB MUM.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 23"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 23</span>
+                </div>
+
+                <div class="client">
+                    <img src="NAPA.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 24"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 24</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROW 3  (logo 25 - 36) -->
+
+        <div class="clients-row">
+
+            <div class="clients-track">
+
+                <div class="client">
+                    <img src="NOUPHUEAK.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 25"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 25</span>
+                </div>
+
+                <div class="client">
+                    <img src="OMAIDY.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 26"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 26</span>
+                </div>
+
+                <div class="client">
+                    <img src="PARKSON.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 27"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 27</span>
+                </div>
+
+                <div class="client">
+                    <img src="SIZZLER.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 28"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 28</span>
+                </div>
+
+                <div class="client">
+                    <img src="cSMALL-B.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 29"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 29</span>
+                </div>
+
+                <div class="client">
+                    <img src="SMALL-B.jpg
+THE COFFEE CLUB.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 30"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 30</span>
+                </div>
+
+                <div class="client">
+                    <img src="THE SUNSET.jpeg"
+                         alt="ໂລໂກ້ລູກຄ້າ 31"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 31</span>
+                </div>
+
+                <div class="client">
+                    <img src="VITAMILK.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 32"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 32</span>
+                </div>
+
+                <div class="client">
+                    <img src="YOYOLANgD.jp"
+                         alt="ໂລໂກ້ລູກຄ້າ 33"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 33</span>
+                </div>
+
+                <div class="client">
+                    <img src="ສະຖານບັນການທະນາຄານ.png"
+                         alt="ໂລໂກ້ລູກຄ້າ 34"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 34</span>
+                </div>
+
+                <div class="client">
+                    <img src="ສະຖາບັນສຸສະກະ.jpg"
+                         alt="ໂລໂກ້ລູກຄ້າ 35"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 35</span>
+                </div>
+
+                <div class="client">
+                    <img src="clients/client36.png"
+                         alt="ໂລໂກ້ລູກຄ້າ 36"
+                         loading="lazy"
+                         onerror="this.parentElement.classList.add('is-empty')">
+                    <span>LOGO 36</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     WORKS
+========================== -->
+
+<section class="works" id="works">
+
+    <div class="section-header">
+
+        <div>
+            <p class="section-label">
+                ຜົນງານທີ່ຄັດເລືອກ
+            </p>
+
+            <h2>
+                ຜົນງານຂອງເຮົາ
+            </h2>
+        </div>
+
+        <p class="section-description">
+            ລວມໂປຣເຈັກຕັດຕໍ່ວິດີໂອຫຼ້າສຸດຂອງເຮົາ.
+        </p>
+
+    </div>
+
+
+    <!-- FILTER
+         data-filter ต้องตรงกับ data-category ของการ์ดด้านล่าง
+         (video = คลิปวิดีโอ, graphic = ภาพกราฟิก) -->
+
+    <div class="filters">
+
+        <span class="filter-pill" aria-hidden="true"></span>
+
+        <button class="filter active" data-filter="all">
+            ທັງໝົດ
+        </button>
+
+        <button class="filter" data-filter="video">
+            ຕັດຕໍ່ວິດີໂອ
+        </button>
+
+        <button class="filter" data-filter="graphic">
+            ອອກແບບ Graphic
+        </button>
+
+    </div>
+
+
+    <!-- WORK GRID -->
+
+    <div class="work-grid">
+
+        <!-- =====================================================
+             VIDEO WORKS  (data-category="video")
+             GRAPHIC WORKS (data-category="graphic")
+             ใส่รูปของคุณ: เปลี่ยนชื่อไฟล์ใน src ให้ตรงกับรูปที่วางในโฟลเดอร์เดียวกับ index.html
+             อยากเพิ่มอีก: คัดลอกการ์ด <article> ทั้งก้อนไปวางต่อได้เลย
+        ====================================================== -->
+
+        <article class="work-card spot" data-category="video">
+
+            <div class="video-container">
+
+                <video
+                    src="clip1.mp4"
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata">
+                </video>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 01</h3>
+                <p>TIKTOK / ວິດີໂອສັ້ນ</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="video">
+
+            <div class="video-container">
+
+                <video
+                    src="clip2.mp4"
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata">
+                </video>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 02</h3>
+                <p>INSTAGRAM REELS</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="video">
+
+            <div class="video-container">
+
+                <video
+                    src="clip3.mp4"
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata">
+                </video>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 03</h3>
+                <p>ໂຄສະນາ</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="video">
+
+            <div class="video-container">
+
+                <video
+                    src="clip4.mp4"
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata">
+                </video>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 04</h3>
+                <p>TIKTOK / ວິດີໂອສັ້ນ</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="video">
+
+            <div class="video-container">
+
+                <video
+                    src="clip5.mp4"
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata">
+                </video>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 05</h3>
+                <p>INSTAGRAM REELS</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="video">
+
+            <div class="video-container">
+
+                <video
+                    src="clip6.mp4"
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata">
+                </video>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 06</h3>
+                <p>ໂປຣເຈັກອື່ນໆ</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="graphic">
+
+            <div class="video-container image-container">
+
+                <img src="graphic1.jpg"
+                     alt="ຜົນງານອອກແບບ Graphic 01"
+                     loading="lazy">
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 07</h3>
+                <p>ອອກແບບ Graphic / POSTER</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="graphic">
+
+            <div class="video-container image-container">
+
+                <img src="graphic2.jpg"
+                     alt="ຜົນງານອອກແບບ Graphic 02"
+                     loading="lazy">
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 08</h3>
+                <p>ອອກແບບ Graphic / BANNER</p>
+
+            </div>
+
+        </article>
+
+        <article class="work-card spot" data-category="graphic">
+
+            <div class="video-container image-container">
+
+                <img src="graphic3.jpg"
+                     alt="ຜົນງານອອກແບບ Graphic 03"
+                     loading="lazy">
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>ຊື່ໂປຣເຈັກ 09</h3>
+                <p>ອອກແບບ Graphic / LOGO</p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SERVICES
+========================== -->
+
+<section class="services" id="services">
+
+    <div class="section-header">
+
+        <div>
+
+            <p class="section-label">
+                ບໍລິການຂອງເຮົາ
+            </p>
+
+            <h2>
+                ເຮົາສ້າງ<br>
+                <span>ຫຍັງແດ່.</span>
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="service-list">
+
+        <div class="service-item spot">
+
+            <div class="bento-visual v-timeline" aria-hidden="true">
+                <div class="tl"><i style="--l:4%;--w:30%"></i><i style="--l:38%;--w:18%"></i><i style="--l:60%;--w:34%"></i></div>
+                <div class="tl"><i style="--l:10%;--w:22%"></i><i style="--l:36%;--w:40%"></i><i style="--l:80%;--w:14%"></i></div>
+                <div class="tl"><i style="--l:0%;--w:48%"></i><i style="--l:52%;--w:26%"></i></div>
+                <span class="playhead"></span>
+            </div>
+
+            <div class="bento-head">
+                <span class="bento-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
+                </span>
+                <h3>ຕັດຕໍ່ວິດີໂອ</h3>
+            </div>
+
+            <p>
+                ການຕັດຕໍ່ຈັງຫວະໄວ ອອກແບບມາເພື່ອດຶງດູດຄວາມສົນໃຈ ແລະ ເຮັດໃຫ້ຜູ້ຊົມເບິ່ງຈົນຈົບ ແບບມືອາຊີບ ສຳລັບຄຣີເອເຕີ, ອິນຟລູເອັນເຊີ ແລະ ທຸລະກິດ.
+            </p>
+
+        </div>
+
+        <div class="service-item spot">
+
+            <div class="bento-visual v-shapes" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+
+            <div class="bento-head">
+                <span class="bento-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+                </span>
+                <h3>ອອກແບບ Graphic</h3>
+            </div>
+
+            <p>
+                ອອກແບບສື່ Poster, Banner, Logo ໃຫ້ຕົງກັບເເບຣນຂອງທ່ານ.
+            </p>
+
+        </div>
+
+        <div class="service-item spot">
+
+            <div class="bento-visual v-rec" aria-hidden="true"><i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i><span class="rec"><b></b>REC</span></div>
+
+            <div class="bento-head">
+                <span class="bento-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                </span>
+                <h3>ຖ່າຍຣີວິວສິນຄ້າ</h3>
+            </div>
+
+            <p>
+                ຖ່າຍໂປຣໂມດສິນຄ້າຂອງທ່ານ ແລະ ດຶງດູດລູກຄ້າໃຫ້ສົນໃຈ.
+            </p>
+
+        </div>
+
+        <div class="service-item spot">
+
+            <div class="bento-visual v-idea" aria-hidden="true"><span class="tag t1">Hook</span><span class="tag t2">Story</span><span class="tag t3">CTA</span></div>
+
+            <div class="bento-head">
+                <span class="bento-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+                </span>
+                <h3>ຄິດຄົ້ນຄອນເທັ້ນ</h3>
+            </div>
+
+            <p>
+                ວາງແຜນເນື້ອຫາໄອເດຍສ້າງສັນຕົງກຸ່ມເປົ້າໝາຍ.
+            </p>
+
+        </div>
+
+        <div class="service-item spot">
+
+            <div class="bento-visual v-wave" aria-hidden="true"><i style="--i:0;--h:67%"></i><i style="--i:1;--h:45%"></i><i style="--i:2;--h:76%"></i><i style="--i:3;--h:32%"></i><i style="--i:4;--h:35%"></i><i style="--i:5;--h:38%"></i><i style="--i:6;--h:72%"></i><i style="--i:7;--h:33%"></i><i style="--i:8;--h:90%"></i><i style="--i:9;--h:53%"></i><i style="--i:10;--h:30%"></i><i style="--i:11;--h:37%"></i><i style="--i:12;--h:81%"></i><i style="--i:13;--h:79%"></i><i style="--i:14;--h:34%"></i><i style="--i:15;--h:56%"></i><i style="--i:16;--h:37%"></i><i style="--i:17;--h:80%"></i><i style="--i:18;--h:33%"></i><i style="--i:19;--h:41%"></i><i style="--i:20;--h:54%"></i><i style="--i:21;--h:33%"></i><i style="--i:22;--h:76%"></i><i style="--i:23;--h:32%"></i><i style="--i:24;--h:54%"></i><i style="--i:25;--h:31%"></i><i style="--i:26;--h:43%"></i><i style="--i:27;--h:63%"></i><i style="--i:28;--h:79%"></i><i style="--i:29;--h:44%"></i></div>
+
+            <div class="bento-head">
+                <span class="bento-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                </span>
+                <h3>ພາກສຽງ</h3>
+            </div>
+
+            <p>
+                ສຽງບັນຍາຍຄຸນນະພາບ, ສຽງພາກໂຄສະນາ ເເລະ ສຽງປະກອບຕ່າງໆ.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ABOUT
+========================== -->
+
+<section class="about" id="about">
+
+    <div class="about-image">
+
+        <!-- PUT YOUR PHOTO HERE -->
+
+        <img src="team.png"
+             alt="ທີມງານຂອງເຮົາ">
+
+    </div>
+
+
+    <div class="about-content">
+
+        <p class="section-label">
+            ກ່ຽວກັບເຮົາ
+        </p>
+
+        <h2>
+            ການຕັດຕໍ່ບໍ່ແມ່ນພຽງ<br>
+            ແຕ່ <span>ການຕັດ.</span>
+        </h2>
+
+        <p>
+            ເຮົາແມ່ນທີມຕັດຕໍ່ວິດີໂອສາຍຄຣີເອທີບ ທີ່ເນັ້ນສ້າງ
+            ຄອນເທັ້ນທີ່ໜ້າສົນໃຈສຳລັບສື່ສັງຄົມອອນລາຍ.
+        </p>
+
+        <p>
+            ຕັ້ງແຕ່ຟຸດເຕດິບຈົນເຖິງການອັບໂຫຼດສຸດທ້າຍ
+            ເຮົາຊ່ວຍໃຫ້ຄຣີເອເຕີ ແລະ ທຸລະກິດ ປ່ຽນໄອເດຍຂອງຕົນ
+            ໃຫ້ກາຍເປັນຄອນເທັ້ນທີ່ຄົນຢາກເບິ່ງ.
+        </p>
+
+        <a href="#contact" class="text-link">
+            ຮ່ວມງານກັບເຮົາ
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================== -->
+
+<section class="cta">
+
+    <div class="cta-card">
+
+        <h2>
+            ມາສ້າງສື່ອອນລາຍ<br>
+            <span>ນຳກັນ.</span>
+        </h2>
+
+        <a href="#contact" class="button button-light">
+            ເລີ່ມໂປຣເຈັກ
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CONTACT
+========================== -->
+
+<section class="contact" id="contact">
+
+    <div class="contact-heading">
+
+        <h2>
+            ຕິດຕໍ່<br>
+            <span>ສອບຖາມ.</span>
+        </h2>
+
+        <p class="quick-label">
+            ຫຼື ທັກຫາເຮົາໂດຍກົງ
+        </p>
+
+        <div class="quick-links">
+
+            <a class="quick" href="https://wa.me/qr/DI5XOLF52MKBO1" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                WhatsApp
+            </a>
+
+            <a class="quick" href="https://www.facebook.com/profile.php?id=61591587613293" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+                Facebook
+            </a>
+
+            <a class="quick" href="https://www.tiktok.com/@behindlaos?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                TikTok
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <form id="contactForm" class="contact-card">
+
+        <div class="form-group">
+
+            <label for="f-name">
+                ຊື່ຂອງທ່ານ
+            </label>
+
+            <input
+                id="f-name"
+                type="text"
+                name="name"
+                placeholder="ຊື່ຂອງທ່ານ"
+                required>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="f-email">
+                ອີເມວ
+            </label>
+
+            <input
+                id="f-email"
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                required>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="f-project">
+                ປະເພດໂປຣເຈັກ
+            </label>
+
+            <select id="f-project" name="project">
+
+                <option>ຕັດຕໍ່ວິດີໂອ</option>
+                <option>ອອກແບບກຣາຟິກ</option>
+                <option>ຖ່າຍຣີວິວສິນຄ້າ</option>
+                <option>ຂຽນສະຄຣິບ</option>
+                <option>ພາກສຽງໂຄສະນາ</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="f-message">
+                ຂໍ້ຄວາມ
+            </label>
+
+            <textarea
+                id="f-message"
+                name="message"
+                rows="5"
+                placeholder="ບອກເຮົາກ່ຽວກັບໂປຣເຈັກຂອງທ່ານ..."
+                required></textarea>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="submit-button">
+
+            ສົ່ງຄຳຂໍ
+
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <div class="footer-brand">
+
+        <img src="Behind.jpeg"
+             alt="ໂລໂກ້">
+
+        <span>
+            BEHIND-ເບື້ອງຫຼັງ
+        </span>
+
+    </div>
+
+
+    <div class="social-links">
+
+        <!-- CHANGE YOUR SOCIAL LINKS -->
+
+        <a href="https://www.tiktok.com/@behindlaos?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" aria-label="TIKTOK">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                <span>TIKTOK</span>
+            </a>
+
+        <a href="https://wa.me/qr/DI5XOLF52MKBO1" target="_blank" rel="noopener" aria-label="WHATSAPP">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                <span>WHATSAPP</span>
+            </a>
+
+        <a href="https://www.facebook.com/profile.php?id=61591587613293" target="_blank" rel="noopener" aria-label="FACEBOOK">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+                <span>FACEBOOK</span>
+            </a>
+
+    </div>
+
+
+    <p>
+        © 2026 BEHIND-ເບື້ອງຫຼັງ. ສະຫງວນລິຂະສິດ.
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+</body>
+</html>
