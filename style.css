@@ -1,4 +1,37 @@
 /* =========================================================
+   BEHIND-ເບື້ອງຫຼັງ — STYLE
+   ปรับสีหลัก/ความโค้ง/ระยะขอบได้ที่ตัวแปรด้านล่างนี้ที่เดียว
+========================================================= */
+
+:root {
+
+    --bg: #060607;
+    --fg: #f4f4f6;
+    --muted: #a1a1aa;
+    --dim: #71717a;
+
+    --line: rgba(255, 255, 255, 0.08);
+    --line-2: rgba(255, 255, 255, 0.16);
+    --glass: rgba(255, 255, 255, 0.035);
+
+    /* สีเน้น (แสงเรืองม่วงอ่อน) — เปลี่ยนสีเดียวได้ทั้งเว็บ */
+    --accent: #8b8dff;
+    --accent-soft: #c9cbff;
+    --accent-rgb: 139, 141, 255;
+
+    --r-lg: 28px;
+    --r-md: 20px;
+    --r-sm: 14px;
+
+    /* ระยะขอบซ้าย-ขวาของทุกส่วน (กว้างสุด 1240px) */
+    --pad-x: max(20px, calc((100vw - 1240px) / 2));
+
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+
+/* =========================================================
    RESET
 ========================================================= */
 
@@ -10,15 +43,21 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 90px;
 }
 
 body {
-    font-family: "Noto Sans Lao", "Inter", sans-serif;
-    background: #080808;
-    color: #f5f5f5;
-    line-height: 1.5;
+    font-family: "Inter", "Noto Sans Lao", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.65;
     overflow-x: hidden;
     position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: rgba(var(--accent-rgb), 0.35);
 }
 
 a {
@@ -30,6 +69,11 @@ img,
 video {
     width: 100%;
     display: block;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent-soft);
+    outline-offset: 3px;
 }
 
 
@@ -55,6 +99,7 @@ video {
 
 .hero,
 .intro,
+.clients,
 .works,
 .services,
 .about,
@@ -67,373 +112,550 @@ footer {
 
 
 /* =========================================================
-   NAVBAR
+   SHARED: LABEL / HEADINGS / BUTTONS
+========================================================= */
+
+.eyebrow,
+.section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 7px 15px;
+    margin-bottom: 24px;
+
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--glass);
+
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.eyebrow::before,
+.section-label::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+h2 {
+    font-size: clamp(34px, 4.8vw, 62px);
+    line-height: 1.2;
+    font-weight: 800;
+    color: #fff;
+}
+
+h2 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    margin-bottom: 48px;
+}
+
+.section-description {
+    max-width: 340px;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.button {
+    position: relative;
+    overflow: hidden;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 50px;
+    padding: 0 28px;
+
+    border-radius: 999px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        transform 0.35s var(--ease),
+        box-shadow 0.35s var(--ease),
+        background 0.3s,
+        border-color 0.3s;
+}
+
+.button-light {
+    background: #fff;
+    color: #0a0a0a;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.4), 0 10px 40px rgba(var(--accent-rgb), 0.25);
+}
+
+/* แสงวิ่งผ่านปุ่ม */
+
+.button-light::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 40%;
+
+    background: linear-gradient(100deg, transparent, rgba(var(--accent-rgb), 0.45), transparent);
+    transform: skewX(-20deg);
+
+    animation: shine 4.5s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0%, 60% { left: -60%; }
+    100%    { left: 140%; }
+}
+
+.button-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 0 1px #fff, 0 16px 50px rgba(var(--accent-rgb), 0.4);
+}
+
+.button-outline {
+    border: 1px solid var(--line-2);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.button-outline:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.35);
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   NAVBAR (แคปซูลลอย)
 ========================================================= */
 
 .navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 100;
+
+    width: min(1120px, calc(100% - 28px));
 
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
+    gap: 24px;
 
-    padding: 18px 5vw;
+    padding: 8px 10px 8px 14px;
 
-    background: rgba(8, 8, 8, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--line);
+    border-radius: 999px;
 
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(10, 10, 12, 0.55);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.navbar.scrolled {
+    background: rgba(10, 10, 12, 0.82);
+    border-color: var(--line-2);
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: 1px;
-
     white-space: nowrap;
 }
 
 /* ขนาดโลโก้ — ปรับตรงนี้ได้เลย */
 
 .logo {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: 12px;
     flex-shrink: 0;
 }
 
 .navbar nav {
     display: flex;
-    gap: 32px;
+    gap: 4px;
 }
 
 .navbar nav a {
-    font-size: 10px;
-    letter-spacing: 2px;
-    font-weight: 600;
-    color: #999;
-    transition: 0.3s;
+    padding: 9px 16px;
+    border-radius: 999px;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+
+    transition: color 0.25s, background 0.25s;
 }
 
 .navbar nav a:hover {
-    color: white;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .nav-button {
-    padding: 10px 18px;
-    border: 1px solid #444;
+    padding: 11px 20px;
+    border-radius: 999px;
 
-    font-size: 10px;
-    letter-spacing: 1.5px;
+    background: #fff;
+    color: #0a0a0a;
+
+    font-size: 13px;
     font-weight: 700;
-
     white-space: nowrap;
-    transition: 0.3s;
+
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
 }
 
 .nav-button:hover {
-    background: white;
-    color: black;
-    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.45);
 }
 
 
 /* =========================================================
    HERO
+   โลโก้เด้งเข้ามา → เลื่อนลงแล้วจางหาย → ข้อความโผล่ขึ้นมา
+   (html.roll = โหมดแอนิเมชัน ถ้าปิดแอนิเมชันในเครื่อง
+    จะเป็นเลย์เอาต์ธรรมดา โลโก้ + ข้อความเรียงลงมา)
 ========================================================= */
 
 .hero {
-    min-height: 100vh;
-    padding: 180px 7vw 80px;
+    border-bottom: 1px solid var(--line);
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 5vw;
-
+.hero-stage {
     position: relative;
     overflow: hidden;
 
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    min-height: 100vh;
+    min-height: 100svh;
+
+    padding: 140px var(--pad-x) 110px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+
+    text-align: center;
 }
 
-/* Hero light */
+/* ระยะเลื่อนของหัวเว็บ: ยิ่งสูงยิ่งเลื่อนนานกว่าโลโก้จะจาง */
 
-.hero::before {
-    content: "";
+html.roll .hero {
+    height: 260vh;
+}
+
+html.roll .hero-stage {
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+    height: 100svh;
+    min-height: 0;
+
+    padding: 0;
+    display: block;
+}
+
+
+/* ---------- พื้นหลังหัวเว็บ: แสงเรือง + ตาราง ---------- */
+
+.aurora {
     position: absolute;
-
-    width: 800px;
-    height: 800px;
-
-    right: -300px;
-    top: -300px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,0.06),
-            transparent 65%
-        );
-
-    filter: blur(40px);
-
-    animation: heroGlow 12s ease-in-out infinite alternate;
-
+    inset: 0;
+    overflow: hidden;
     pointer-events: none;
 }
 
-@keyframes heroGlow {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.25) translate(-100px,100px);
-    }
+.aurora i {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
 }
 
-.hero-content {
-    flex: 1;
-    min-width: 0;
-    max-width: 1200px;
+.aurora i:nth-child(1) {
+    width: 46vmax;
+    height: 46vmax;
+    left: -14vmax;
+    top: -22vmax;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.5), transparent 65%);
+    animation: drift1 18s ease-in-out infinite alternate;
+}
+
+.aurora i:nth-child(2) {
+    width: 40vmax;
+    height: 40vmax;
+    right: -14vmax;
+    bottom: -20vmax;
+    background: radial-gradient(circle, rgba(94, 234, 212, 0.25), transparent 65%);
+    animation: drift2 22s ease-in-out infinite alternate;
+}
+
+@keyframes drift1 {
+    to { transform: translate(8vmax, 6vmax) scale(1.15); }
+}
+
+@keyframes drift2 {
+    to { transform: translate(-8vmax, -5vmax) scale(1.2); }
+}
+
+.hero-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.55;
+
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 15%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 15%, transparent 75%);
+}
+
+
+/* ---------- โลโก้ ---------- */
+
+.hero-logo {
+
+    /* ความโค้งมุมโลโก้ (50% = วงกลม, 0 = สี่เหลี่ยมคม) */
+    --logo-radius: 10%;
+
     position: relative;
     z-index: 2;
+
+    width: min(44vh, 68vw);
+    width: min(44svh, 68vw);
+    aspect-ratio: 1 / 1;
 }
 
-.eyebrow,
-.section-label {
-    color: #777;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    margin-bottom: 25px;
+html.roll .hero-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    /* ขนาดโลโก้ตอนเต็มจอ — ปรับตรงนี้ได้ */
+    width: min(64vh, 84vw);
+    width: min(64svh, 84vw);
+
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity, filter;
 }
 
-.hero h1 {
-    font-size: clamp(48px, 7.5vw, 120px);
-    line-height: 0.88;
-    letter-spacing: -7px;
-    font-weight: 800;
+/* เด้งเข้ามาตอนเปิดเว็บ */
 
-    animation: heroText 1.2s cubic-bezier(.2,.8,.2,1) both;
+.hero-logo-pop {
+    width: 100%;
+    height: 100%;
+
+    animation: logoPop 1.3s var(--spring) both;
 }
 
-@keyframes heroText {
+@keyframes logoPop {
     from {
         opacity: 0;
-        transform: translateY(60px);
-        filter: blur(10px);
+        transform: scale(0.3);
+        filter: blur(16px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1);
         filter: blur(0);
     }
 }
 
-.hero h1 span,
-h2 span {
-    color: #666;
-}
+/* หลังเด้งเสร็จ ลอยขึ้นลงเบา ๆ */
 
-.hero-description {
-    max-width: 500px;
-    margin-top: 40px;
-    color: #999;
-    font-size: 16px;
-
-    animation: fadeUp 1s 0.3s both;
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(25px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 12px;
-    margin-top: 35px;
-
-    animation: fadeUp 1s 0.5s both;
-}
-
-.button {
-    display: inline-block;
-    padding: 15px 24px;
-
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-
-    transition: 0.35s;
+.hero-logo-float {
     position: relative;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    animation: logoFloat 7s ease-in-out 1.4s infinite;
 }
 
-.button-light {
-    background: white;
-    color: black;
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
 }
 
-.button-light:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 40px rgba(255,255,255,0.15);
-}
-
-.button-outline {
-    border: 1px solid #444;
-}
-
-.button-outline:hover {
-    background: white;
-    color: black;
-    border-color: white;
-    transform: translateY(-4px);
-}
-
-.hero-scroll {
-    position: absolute;
-    bottom: 35px;
-    right: 7vw;
-
-    color: #555;
-    font-size: 9px;
-    letter-spacing: 2px;
-
-    animation: scrollPulse 2s ease-in-out infinite;
-}
-
-@keyframes scrollPulse {
-    0%,100% {
-        opacity: 0.4;
-        transform: translateY(0);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(8px);
-    }
-}
-
-
-/* =========================================================
-   HERO LOGO (ข้างหัวข้อ)
-========================================================= */
-
-.hero-logo {
-
-    /* ปรับความโค้งมุมโลโก้ตรงนี้ (50% = วงกลม) */
-    --logo-radius: 32px;
-
-    position: relative;
-    z-index: 2;
-
-    flex-shrink: 0;
-
-    width: clamp(220px, 27vw, 420px);
-    aspect-ratio: 1 / 1;
-
-    animation: logoFloat 6s ease-in-out infinite;
-}
-
-/* แสงฟุ้งด้านหลัง */
-
-.hero-logo::before {
+.hero-logo-float::before {
     content: "";
     position: absolute;
-    inset: -25%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,0.14),
-            transparent 65%
-        );
-
-    filter: blur(30px);
-
+    inset: -28%;
     z-index: -1;
+
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.35), transparent 65%);
+    filter: blur(40px);
 
     animation: logoGlow 5s ease-in-out infinite alternate;
 }
 
-/* กรอบวงนอก */
+@keyframes logoGlow {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+}
 
-.hero-logo::after {
+.hero-logo-float::after {
     content: "";
     position: absolute;
-    inset: -18px;
+    inset: -3.5%;
 
-    border: 1px solid rgba(255,255,255,0.14);
-    border-radius: calc(var(--logo-radius) + 18px);
+    border: 1px solid var(--line-2);
+    border-radius: calc(var(--logo-radius) + 3.5%);
 
     pointer-events: none;
-
-    animation: ringPulse 4s ease-in-out infinite;
 }
 
 .hero-logo img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 
     border-radius: var(--logo-radius);
-    border: 1px solid rgba(255,255,255,0.18);
-
-    animation: fadeUp 1.2s 0.4s both;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 
     box-shadow:
-        0 30px 80px rgba(0,0,0,0.6),
-        0 0 60px rgba(255,255,255,0.08);
+        0 40px 100px rgba(0, 0, 0, 0.65),
+        0 0 80px rgba(var(--accent-rgb), 0.18);
 }
 
-@keyframes logoFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-16px);
-    }
+
+/* ---------- ข้อความ ---------- */
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+
+    width: 100%;
+    max-width: 1000px;
 }
 
-@keyframes logoGlow {
-    from {
-        opacity: 0.5;
-    }
-    to {
-        opacity: 1;
-    }
+html.roll .hero-content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    width: min(1000px, 90vw);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity, filter;
 }
 
-@keyframes ringPulse {
-    0%, 100% {
-        opacity: 0.35;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.04);
-    }
+.hero h1 {
+    font-size: clamp(42px, 7vw, 104px);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+
+    background: linear-gradient(180deg, #fff 35%, rgba(255, 255, 255, 0.5));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-description {
+    max-width: 520px;
+    margin: 30px auto 0;
+
+    color: var(--muted);
+    font-size: 17px;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+}
+
+.hero-scroll {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--dim);
+    font-size: 12px;
+
+    pointer-events: none;
+}
+
+.mouse {
+    position: relative;
+    width: 20px;
+    height: 32px;
+
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+}
+
+.mouse::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 6px;
+
+    width: 3px;
+    height: 6px;
+    margin-left: -1.5px;
+
+    border-radius: 3px;
+    background: #fff;
+
+    animation: wheel 1.8s ease-in-out infinite;
+}
+
+@keyframes wheel {
+    0%   { opacity: 0; transform: translateY(0); }
+    30%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(12px); }
 }
 
 
@@ -442,303 +664,631 @@ h2 span {
 ========================================================= */
 
 .intro {
-    padding: 160px 7vw;
-    max-width: 1200px;
-    position: relative;
-}
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(32px, 6vw, 90px);
+    align-items: center;
 
-.intro h2 {
-    font-size: clamp(45px, 7vw, 95px);
-    line-height: 0.95;
-    letter-spacing: -4px;
+    padding: clamp(80px, 11vw, 150px) var(--pad-x);
 }
 
 .intro-text {
-    max-width: 600px;
-    margin-top: 45px;
-    color: #888;
+    max-width: 520px;
+    margin-top: 28px;
+
+    color: var(--muted);
     font-size: 17px;
 }
 
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+}
+
+.chip {
+    padding: 8px 16px;
+
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--glass);
+
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.intro-image {
+    position: relative;
+    padding: 10px;
+
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--glass);
+}
+
+.intro-image::before {
+    content: "";
+    position: absolute;
+    inset: 10% -6% -8%;
+    z-index: -1;
+
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.28), transparent 65%);
+    filter: blur(50px);
+}
+
+.intro-image img {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: calc(var(--r-lg) - 10px);
+}
+
+
+/* =========================================================
+   CLIENTS (โลโก้ลูกค้า — โชว์ทั้งหมด อยู่นิ่ง)
+========================================================= */
+
+.clients {
+    padding: clamp(70px, 9vw, 120px) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.clients .section-header {
+    padding-inline: var(--pad-x);
+}
+
+.clients-marquee {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+    padding: 28px var(--pad-x) 0;
+}
+
+/* ไม่ต้องแก้ HTML: ให้แถว/แทรกเป็น grid เดียวกันทั้ง 36 โลโก้ */
+
+.clients-row,
+.clients-track {
+    display: contents;
+}
+
+/* กรอบโลโก้ (พื้นสว่างให้เห็นโลโก้ทุกสี ถ้าโลโก้เป็นสีขาวทั้งหมด
+   ให้เปลี่ยน background เป็นสีเข้ม เช่น #17171b) */
+
+.client {
+    position: relative;
+
+    aspect-ratio: 16 / 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 14px;
+
+    background: #f3f3f6;
+    border-radius: var(--r-sm);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    transition:
+        transform 0.4s var(--spring),
+        box-shadow 0.4s var(--ease);
+}
+
+.client:hover {
+    z-index: 3;
+    transform: scale(1.22);
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55), 0 0 40px rgba(var(--accent-rgb), 0.25);
+}
+
+.client img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* กรอบว่าง (ยังไม่มีรูป) */
+
+.client span {
+    display: none;
+
+    color: #8a8a93;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.client.is-empty span {
+    display: block;
+}
+
+.client.is-empty img {
+    display: none;
+}
+
+
+@media (max-width: 1100px) and (min-width: 801px) {
+    .clients-marquee { grid-template-columns: repeat(4, 1fr); }
+}
 
 /* =========================================================
    WORKS
 ========================================================= */
 
 .works {
-    padding: 100px 5vw;
-    position: relative;
+    padding: clamp(80px, 10vw, 130px) var(--pad-x);
 }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    margin-bottom: 60px;
-}
-
-.section-header h2 {
-    font-size: clamp(45px, 7vw, 90px);
-    line-height: 0.9;
-    letter-spacing: -4px;
-}
-
-.section-description {
-    max-width: 300px;
-    color: #777;
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   FILTER
-========================================================= */
+/* ---------- ปุ่มกรองหมวด (แคปซูลสไลด์) ---------- */
 
 .filters {
-    display: flex;
-    gap: 10px;
+    position: relative;
+
+    display: inline-flex;
+    gap: 2px;
+    padding: 5px;
     margin-bottom: 40px;
+
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--glass);
+
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill {
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 0;
+    width: 0;
+
+    border-radius: 999px;
+    background: #fff;
+
+    transition:
+        transform 0.45s var(--ease),
+        width 0.45s var(--ease);
 }
 
 .filter {
-    background: transparent;
-    border: 1px solid #333;
-    color: #777;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
 
-    padding: 10px 18px;
+    padding: 10px 20px;
+
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
 
-    font-family: inherit;
-    font-size: 10px;
-    letter-spacing: 1px;
-
-    transition: 0.3s;
+    transition: color 0.3s;
 }
 
-.filter:hover,
+.filter:hover {
+    color: #fff;
+}
+
 .filter.active {
-    background: white;
-    color: black;
-    border-color: white;
-    transform: translateY(-2px);
+    color: #0a0a0a;
 }
 
-
-/* =========================================================
-   WORK GRID
-========================================================= */
+/* ---------- การ์ดผลงาน ---------- */
 
 .work-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
-    max-width: 1100px;
-    margin: 0 auto;
+    gap: 24px;
 }
 
 .work-card {
-    cursor: pointer;
     position: relative;
-    transition: 0.5s ease;
+    isolation: isolate;
+
+    padding: 10px;
+
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--glass);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.5s var(--ease),
+        border-color 0.4s;
+}
+
+.work-card.show {
+    animation: cardIn 0.5s var(--ease) both;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+}
+
+.work-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--line-2);
 }
 
 .video-container {
     position: relative;
     overflow: hidden;
-    background: #111;
 
     aspect-ratio: 9 / 16;
 
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.08);
-
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-
-    transition:
-        transform 0.5s ease,
-        box-shadow 0.5s ease,
-        border-color 0.5s ease;
+    border-radius: calc(var(--r-lg) - 10px);
+    background: #0d0d10;
 }
 
-/* Video glow */
-
-.video-container::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,0.15),
-            transparent
-        );
-
-    transform: translateX(-120%);
-    transition: 0.8s;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.work-card:hover .video-container::before {
-    transform: translateX(120%);
-}
-
-.work-card:hover .video-container {
-    transform: translateY(-10px) scale(1.015);
-    border-color: rgba(255,255,255,0.25);
-
-    box-shadow:
-        0 30px 90px rgba(0,0,0,0.65),
-        0 0 50px rgba(255,255,255,0.04);
-}
-
-.video-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-    transition:
-        transform 0.8s ease,
-        filter 0.8s ease;
-
-    filter: brightness(0.75) saturate(0.85);
-}
-
-.work-card:hover video {
-    transform: scale(1.06);
-    filter: brightness(1) saturate(1.05);
-}
-
-
-/* =========================================================
-   IMAGE WORKS (ผลงานแบบรูปภาพ)
-========================================================= */
-
-/* สัดส่วนรูป: เปลี่ยนได้ เช่น 1 / 1 (จัตุรัส), 4 / 5, 16 / 9 */
-
-.image-container {
-    aspect-ratio: 4 / 5;
-}
-
+.video-container video,
 .video-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 
-    transition:
-        transform 0.8s ease,
-        filter 0.8s ease;
+    filter: brightness(0.82) saturate(0.9);
 
-    filter: brightness(0.75) saturate(0.85);
+    transition:
+        transform 0.8s var(--ease),
+        filter 0.6s;
 }
 
+.work-card:hover .video-container video,
 .work-card:hover .video-container img {
-    transform: scale(1.06);
+    transform: scale(1.05);
     filter: brightness(1) saturate(1.05);
 }
 
+.image-container {
+    aspect-ratio: 4 / 5;
+}
 
 .work-info {
-    padding-top: 18px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 4px;
+
+    padding: 16px 8px 8px;
 }
 
 .work-info h3 {
-    font-size: 13px;
-    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
 }
 
 .work-info p {
-    margin-top: 5px;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    color: #666;
-}
-
-.work-info > span {
-    color: #555;
-    font-size: 11px;
+    color: var(--dim);
+    font-size: 12px;
+    font-weight: 500;
 }
 
 
 /* =========================================================
-   SERVICES
+   SPOTLIGHT (แสงตามเมาส์ในการ์ด)
+   ใช้กับคลาส .spot — JS ส่งตำแหน่งเมาส์เข้ามาใน --mx / --my
+========================================================= */
+
+.spot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: radial-gradient(
+        420px circle at var(--mx, 50%) var(--my, 0%),
+        rgba(var(--accent-rgb), 0.16),
+        transparent 45%
+    );
+
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.spot:hover::before {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SERVICES (Bento)
 ========================================================= */
 
 .services {
-    padding: 150px 7vw;
+    padding: clamp(80px, 10vw, 130px) var(--pad-x);
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,0.025),
-            rgba(255,255,255,0.01)
-        );
-
-    border-top: 1px solid rgba(255,255,255,0.06);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.services h2 {
-    font-size: clamp(50px, 8vw, 110px);
-    line-height: 0.9;
-    letter-spacing: -5px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    border-top: 1px solid var(--line);
 }
 
 .service-list {
-    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 18px;
 }
 
 .service-item {
-    border-top: 1px solid #333;
-    padding: 35px 0;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
 
-    display: grid;
-    grid-template-columns: 80px 1fr 50px;
-    gap: 30px;
+    grid-column: span 2;
 
-    align-items: start;
-    transition: 0.4s;
+    display: flex;
+    flex-direction: column;
+
+    padding: 22px 22px 26px;
+
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--glass);
+
+    transition: border-color 0.4s, transform 0.5s var(--ease);
 }
 
-.service-item:last-child {
-    border-bottom: 1px solid #333;
+.service-item:nth-child(-n+2) {
+    grid-column: span 3;
 }
 
 .service-item:hover {
-    padding-left: 15px;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.035),
-            transparent
-        );
+    border-color: var(--line-2);
+    transform: translateY(-4px);
 }
 
-.service-item > span {
-    color: #555;
-    font-size: 11px;
+.bento-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bento-icon {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--line-2);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.05);
+
+    color: var(--accent-soft);
+}
+
+.bento-icon svg {
+    width: 19px;
+    height: 19px;
 }
 
 .service-item h3 {
-    font-size: 25px;
-    letter-spacing: -1px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
 }
 
 .service-item p {
-    max-width: 500px;
-    margin-top: 10px;
-    color: #777;
-    font-size: 13px;
+    max-width: 460px;
+    margin-top: 14px;
+
+    color: var(--muted);
+    font-size: 14.5px;
 }
 
-.service-item strong {
-    font-size: 20px;
-    color: #666;
+/* ---------- ภาพประกอบเล็ก ๆ ในการ์ด ---------- */
+
+.bento-visual {
+    position: relative;
+    overflow: hidden;
+
+    height: 132px;
+    margin-bottom: 22px;
+
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
+}
+
+/* ตัดต่อ: ไทม์ไลน์ + หัวเล่นวิ่ง */
+
+.v-timeline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 14px;
+}
+
+.tl {
+    position: relative;
+    height: 22px;
+}
+
+.tl i {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--l);
+    width: var(--w);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.55);
+    border-radius: 7px;
+    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.5), rgba(var(--accent-rgb), 0.22));
+}
+
+.tl:nth-child(2) i {
+    border-color: rgba(94, 234, 212, 0.5);
+    background: rgba(94, 234, 212, 0.2);
+}
+
+.playhead {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 4%;
+    width: 2px;
+
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+
+    animation: scrub 7s linear infinite;
+}
+
+@keyframes scrub {
+    from { left: 4%; }
+    to   { left: 96%; }
+}
+
+/* กราฟิก: รูปทรงลอย */
+
+.v-shapes i {
+    position: absolute;
+    animation: bob 6s ease-in-out infinite;
+}
+
+.v-shapes .s1 {
+    width: 62px;
+    height: 62px;
+    left: calc(50% - 70px);
+    top: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #c4b5fd);
+}
+
+.v-shapes .s2 {
+    width: 56px;
+    height: 56px;
+    left: calc(50% + 4px);
+    top: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 14px;
+    rotate: 14deg;
+    animation-delay: -2s;
+}
+
+.v-shapes .s3 {
+    width: 0;
+    height: 0;
+    left: calc(50% + 44px);
+    top: 70px;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 38px solid rgba(94, 234, 212, 0.85);
+    animation-delay: -4s;
+}
+
+@keyframes bob {
+    50% { translate: 0 -8px; }
+}
+
+/* ถ่ายรีวิว: กรอบเล็งภาพ + REC */
+
+.v-rec .c {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.v-rec .c1 { left: 16px;  top: 16px;    border-right: 0; border-bottom: 0; border-top-left-radius: 6px; }
+.v-rec .c2 { right: 16px; top: 16px;    border-left: 0;  border-bottom: 0; border-top-right-radius: 6px; }
+.v-rec .c3 { left: 16px;  bottom: 16px; border-right: 0; border-top: 0;    border-bottom-left-radius: 6px; }
+.v-rec .c4 { right: 16px; bottom: 16px; border-left: 0;  border-top: 0;    border-bottom-right-radius: 6px; }
+
+.rec {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+}
+
+.rec b {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #ff4d4d;
+    box-shadow: 0 0 10px #ff4d4d;
+
+    animation: blink 1.4s steps(2) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.15; }
+}
+
+/* ไอเดีย: แท็กลอย */
+
+.tag {
+    position: absolute;
+
+    padding: 6px 14px;
+
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    animation: bob 6s ease-in-out infinite;
+}
+
+.tag.t1 { left: 12%; top: 22%; border-color: rgba(var(--accent-rgb), 0.6); }
+.tag.t2 { left: 40%; top: 54%; animation-delay: -2s; }
+.tag.t3 { right: 10%; top: 24%; animation-delay: -4s; border-color: rgba(94, 234, 212, 0.55); }
+
+/* พากย์เสียง: คลื่นเสียง */
+
+.v-wave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.v-wave i {
+    width: 4px;
+    height: var(--h);
+    max-height: 80%;
+
+    border-radius: 4px;
+    background: linear-gradient(var(--accent), #c4b5fd);
+
+    transform-origin: center;
+    animation: pulse 1.3s ease-in-out calc(var(--i) * -0.09s) infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scaleY(0.3); }
+    to   { transform: scaleY(1); }
 }
 
 
@@ -747,150 +1297,137 @@ h2 span {
 ========================================================= */
 
 .about {
-    padding: 150px 7vw;
-
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10vw;
-
+    gap: clamp(36px, 8vw, 120px);
     align-items: center;
+
+    padding: clamp(80px, 10vw, 140px) var(--pad-x);
 }
 
 .about-image {
-    overflow: hidden;
     position: relative;
-}
+    padding: 10px;
 
-.about-image::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.08),
-            transparent 40%
-        );
-
-    pointer-events: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--glass);
 }
 
 .about-image img {
     aspect-ratio: 4 / 5;
     object-fit: cover;
-    filter: grayscale(100%);
-    transition: 0.8s ease;
-}
-
-.about-image:hover img {
-    transform: scale(1.04);
-    filter: grayscale(20%);
-}
-
-.about-content h2 {
-    font-size: clamp(45px, 6vw, 80px);
-    line-height: 0.9;
-    letter-spacing: -4px;
+    border-radius: calc(var(--r-lg) - 10px);
 }
 
 .about-content > p:not(.section-label) {
-    color: #888;
-    max-width: 500px;
-    margin-top: 30px;
-    font-size: 15px;
+    max-width: 480px;
+    margin-top: 22px;
+
+    color: var(--muted);
+    font-size: 16px;
+}
+
+.about-content h2 {
+    font-size: clamp(34px, 4.4vw, 56px);
 }
 
 .text-link {
-    display: inline-block;
-    margin-top: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
-    border-bottom: 1px solid #777;
-    padding-bottom: 5px;
+    margin-top: 34px;
+    padding-bottom: 4px;
 
-    font-size: 10px;
-    letter-spacing: 1.5px;
+    border-bottom: 1px solid var(--line-2);
 
-    transition: 0.3s;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: border-color 0.3s, gap 0.3s var(--ease);
+}
+
+.text-link::after {
+    content: "↗";
+    color: var(--accent-soft);
 }
 
 .text-link:hover {
-    color: white;
-    border-color: white;
-    padding-left: 8px;
+    border-color: #fff;
+    gap: 14px;
 }
 
 
 /* =========================================================
-   CTA
+   CTA (การ์ดแสงเรือง + เส้นขอบวิ่ง)
 ========================================================= */
 
-.cta {
-    padding: 180px 7vw;
-    text-align: center;
-
-    background:
-        radial-gradient(
-            circle at 50% 50%,
-            rgba(0,0,0,0.08),
-            transparent 55%
-        ),
-        #f2f2f2;
-
-    color: #111;
-
-    position: relative;
-    overflow: hidden;
+@property --angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
 }
 
-.cta::before {
+.cta {
+    padding: 10px var(--pad-x) clamp(80px, 10vw, 130px);
+}
+
+.cta-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    padding: clamp(60px, 9vw, 120px) 24px;
+
+    border: 1px solid var(--line);
+    border-radius: 36px;
+
+    background:
+        radial-gradient(60% 90% at 50% 0%, rgba(var(--accent-rgb), 0.28), transparent 70%),
+        radial-gradient(40% 60% at 90% 100%, rgba(94, 234, 212, 0.12), transparent 70%),
+        #0a0a0d;
+
+    text-align: center;
+}
+
+/* เส้นขอบแสงวิ่งรอบการ์ด */
+
+.cta-card::before {
     content: "";
     position: absolute;
+    inset: 0;
+    z-index: -1;
 
-    width: 500px;
-    height: 500px;
+    padding: 1px;
+    border-radius: inherit;
 
-    left: 50%;
-    top: 50%;
+    background: conic-gradient(
+        from var(--angle),
+        transparent 0 65%,
+        rgba(var(--accent-rgb), 0.9) 85%,
+        #fff 92%,
+        transparent 100%
+    );
 
-    transform: translate(-50%, -50%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
 
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0,0,0,0.05),
-            transparent 70%
-        );
+    animation: spin 7s linear infinite;
 }
 
-.cta .section-label {
-    color: #777;
-    position: relative;
+@keyframes spin {
+    to { --angle: 360deg; }
 }
 
 .cta h2 {
-    font-size: clamp(60px, 10vw, 140px);
-    line-height: 0.85;
-    letter-spacing: -7px;
-    position: relative;
-}
-
-.cta h2 span {
-    color: #888;
+    font-size: clamp(36px, 6vw, 80px);
+    line-height: 1.2;
 }
 
 .cta .button {
-    margin-top: 50px;
-    background: #111;
-    color: white;
-    position: relative;
-}
-
-.cta .button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    margin-top: 40px;
 }
 
 
@@ -899,54 +1436,116 @@ h2 span {
 ========================================================= */
 
 .contact {
-    padding: 150px 7vw;
-
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10vw;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(36px, 7vw, 100px);
+    align-items: start;
+
+    padding: clamp(40px, 6vw, 80px) var(--pad-x) clamp(80px, 10vw, 140px);
 }
 
 .contact h2 {
-    font-size: clamp(70px, 10vw, 130px);
-    line-height: 0.8;
-    letter-spacing: -6px;
+    font-size: clamp(44px, 7vw, 96px);
+    line-height: 1.12;
+}
+
+.quick-label {
+    margin-top: 40px;
+
+    color: var(--dim);
+    font-size: 14px;
+}
+
+.quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.quick {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 20px;
+
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--glass);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        background 0.3s,
+        border-color 0.3s,
+        transform 0.3s var(--ease);
+}
+
+.quick svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.quick:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: var(--line-2);
+    transform: translateY(-3px);
+}
+
+.contact-card {
+    padding: clamp(24px, 4vw, 40px);
+
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--glass);
 }
 
 .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 22px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 10px;
-    color: #777;
-    font-size: 9px;
-    letter-spacing: 2px;
+    margin-bottom: 8px;
+
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
 }
 
 input,
 textarea,
 select {
     width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #333;
-    color: white;
+    padding: 14px 16px;
 
-    padding: 13px 0;
-    outline: none;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
 
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
 
-    transition: 0.3s;
+    outline: none;
+
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--dim);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: white;
-    padding-left: 8px;
+    border-color: rgba(var(--accent-rgb), 0.8);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.18);
 }
 
 textarea {
@@ -962,25 +1561,26 @@ select option {
 }
 
 .submit-button {
-    margin-top: 15px;
-    padding: 17px 30px;
+    width: 100%;
+    height: 54px;
+    margin-top: 6px;
 
-    background: white;
-    color: black;
     border: none;
-    cursor: pointer;
+    border-radius: 999px;
+    background: #fff;
+    color: #0a0a0a;
 
     font-family: inherit;
-    font-size: 10px;
+    font-size: 15px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    cursor: pointer;
 
-    transition: 0.35s;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
 }
 
 .submit-button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 40px rgba(255,255,255,0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 44px rgba(var(--accent-rgb), 0.4);
 }
 
 
@@ -989,13 +1589,14 @@ select option {
 ========================================================= */
 
 footer {
-    border-top: 1px solid #292929;
-    padding: 40px 5vw;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 30px;
+
+    padding: 36px var(--pad-x);
+
+    border-top: 1px solid var(--line);
 }
 
 .footer-brand {
@@ -1003,43 +1604,37 @@ footer {
     align-items: center;
     gap: 12px;
 
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
 }
 
 .footer-brand img {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     object-fit: contain;
+    border-radius: 9px;
 }
 
 .social-links {
     display: flex;
-    gap: 25px;
+    gap: 22px;
 }
-
-.social-links a,
-footer p {
-    color: #666;
-    font-size: 9px;
-    letter-spacing: 1px;
-    transition: 0.3s;
-}
-
-.social-links a:hover {
-    color: white;
-    transform: translateY(-2px);
-}
-
-
-/* =========================================================
-   SOCIAL ICONS
-========================================================= */
 
 .social-links a {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+
+    color: var(--dim);
+    font-size: 12px;
+    font-weight: 600;
+
+    transition: color 0.3s, transform 0.3s var(--ease);
+}
+
+.social-links a:hover {
+    color: #fff;
+    transform: translateY(-2px);
 }
 
 .social-links svg {
@@ -1049,35 +1644,34 @@ footer p {
     flex-shrink: 0;
 }
 
-
-/* =========================================================
-   SECTION LIGHT LINE
-========================================================= */
-
-section {
-    position: relative;
+footer p {
+    color: var(--dim);
+    font-size: 12px;
 }
 
-section::before {
-    content: "";
-    position: absolute;
 
-    top: 0;
-    left: 8%;
-    right: 8%;
+/* =========================================================
+   TABLET
+========================================================= */
 
-    height: 1px;
+@media (max-width: 1024px) {
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,0.12),
-            transparent
-        );
+    .work-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-    opacity: 0.6;
-    pointer-events: none;
+    .service-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .service-item,
+    .service-item:nth-child(-n+2) {
+        grid-column: span 1;
+    }
+
+    .service-item:nth-child(1) {
+        grid-column: span 2;
+    }
 }
 
 
@@ -1085,10 +1679,16 @@ section::before {
    MOBILE
 ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
 
     .navbar {
-        padding: 14px 20px;
+        top: 10px;
+        gap: 12px;
+        padding: 6px 8px 6px 10px;
+    }
+
+    .navbar nav {
+        display: none;
     }
 
     .logo {
@@ -1097,111 +1697,51 @@ section::before {
     }
 
     .brand {
-        font-size: 12px;
-    }
-
-    .navbar nav {
-        display: none;
+        gap: 10px;
+        font-size: 13px;
     }
 
     .nav-button {
-        padding: 9px 12px;
+        padding: 10px 16px;
     }
 
-    .hero {
-        padding: 150px 25px 80px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 70px;
+    .hero-stage {
+        padding: 120px 22px 100px;
     }
 
-    .hero-logo {
-        width: 190px;
-        align-self: center;
-        --logo-radius: 26px;
+    html.roll .hero-logo {
+        width: min(52svh, 80vw);
     }
 
     .hero h1 {
-        font-size: 18vw;
-        letter-spacing: -4px;
+        font-size: clamp(38px, 11.5vw, 64px);
     }
 
     .hero-description {
-        font-size: 14px;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        align-items: flex-start;
+        font-size: 15px;
+        margin-top: 22px;
     }
 
     .intro,
-    .works,
-    .services,
     .about,
     .contact {
-        padding: 90px 25px;
-    }
-
-    .intro h2,
-    .services h2,
-    .about-content h2,
-    .cta h2,
-    .contact h2 {
-        letter-spacing: -3px;
+        grid-template-columns: 1fr;
     }
 
     .section-header {
-        display: block;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 36px;
     }
 
-    .section-description {
-        margin-top: 25px;
+    .clients-marquee {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
 
-    .filters {
-        overflow-x: auto;
-        padding-bottom: 10px;
-    }
-
-    .filter {
-        flex-shrink: 0;
-    }
-
-    .work-grid {
-        grid-template-columns: 1fr;
-        gap: 45px;
-    }
-
-    .services {
-        padding-top: 100px;
-    }
-
-    .service-item {
-        grid-template-columns: 35px 1fr;
-        gap: 15px;
-    }
-
-    .service-item strong {
-        display: none;
-    }
-
-    .service-item h3 {
-        font-size: 20px;
-    }
-
-    .about {
-        grid-template-columns: 1fr;
-        gap: 50px;
-    }
-
-    .contact {
-        grid-template-columns: 1fr;
-        gap: 70px;
-    }
-
-    .cta {
-        padding: 110px 25px;
+    .client {
+        padding: 8px 10px;
     }
 
     footer {
@@ -1214,33 +1754,26 @@ section::before {
     }
 }
 
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-    .hero h1 {
-        font-size: 17vw;
-        letter-spacing: -3px;
-    }
+@media (max-width: 600px) {
 
     .work-grid {
-        max-width: 320px;
+        grid-template-columns: 1fr;
+        max-width: 340px;
         margin: 0 auto;
     }
 
-    .video-container {
-        border-radius: 5px;
+    .service-list {
+        grid-template-columns: 1fr;
     }
 
-    .hero-scroll {
-        display: none;
+    .service-item,
+    .service-item:nth-child(1) {
+        grid-column: span 1;
     }
 
-    .cta h2 {
-        font-size: 18vw;
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
 
@@ -1259,75 +1792,5 @@ section::before {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-}
 
-
-/* =========================================================
-   UPDATE: INTRO IMAGE + ABOUT IMAGE (สี ไม่มี hover)
-   (บล็อกนี้อยู่ท้ายไฟล์ เพื่อให้ override กฎด้านบน)
-========================================================= */
-
-/* ---------- INTRO: ข้อความซ้าย / รูปขวา ---------- */
-
-.intro {
-    max-width: none;
-
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 6vw;
-
-    align-items: center;
-}
-
-.intro h2 {
-    font-size: clamp(40px, 5.5vw, 78px);
-}
-
-.intro-image {
-    position: relative;
-    overflow: hidden;
-
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.08);
-
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-}
-
-.intro-image img {
-    /* สัดส่วนรูป: เปลี่ยนได้ เช่น 1 / 1, 3 / 4, 16 / 9 */
-    aspect-ratio: 4 / 5;
-
-    object-fit: cover;
-}
-
-
-/* ---------- ABOUT: รูปทีมเป็นสีจริง ไม่มี hover ---------- */
-
-.about-image::after {
-    display: none;
-}
-
-.about-image img {
-    filter: none;
-    transition: none;
-}
-
-.about-image:hover img {
-    transform: none;
-    filter: none;
-}
-
-
-/* ---------- MOBILE ---------- */
-
-@media (max-width: 768px) {
-
-    .intro {
-        grid-template-columns: 1fr;
-        gap: 50px;
-    }
-
-    .intro-image img {
-        aspect-ratio: 1 / 1;
-    }
 }
