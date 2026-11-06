@@ -2,7 +2,6 @@
    SETTINGS — แก้ตรงนี้ก่อนขึ้นเว็บ
 ========================================================= */
 
-const BUSINESS_EMAIL = "your@email.com";   // ← เปลี่ยนเป็นอีเมลธุรกิจจริง
 
 /* บอกหน้าเว็บว่า script.js โหลดแล้ว (ถ้าไม่โหลด หัวเว็บจะกลับเป็นแบบธรรมดาเอง) */
 
@@ -314,46 +313,6 @@ filters.forEach(filter => {
     });
 
 });
-
-
-/* =========================================================
-   CONTACT FORM
-========================================================= */
-
-const form = document.getElementById("contactForm");
-
-if (form) {
-
-    form.addEventListener("submit", function (event) {
-
-        event.preventDefault();
-
-        const formData = new FormData(form);
-
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const project = formData.get("project");
-        const message = formData.get("message");
-
-        const subject =
-            `New Video Editing Request - ${project}`;
-
-        const body =
-            `Name: ${name}\n` +
-            `Email: ${email}\n` +
-            `Project: ${project}\n\n` +
-            `Message:\n${message}`;
-
-        const mailto =
-            `mailto:${BUSINESS_EMAIL}` +
-            `?subject=${encodeURIComponent(subject)}` +
-            `&body=${encodeURIComponent(body)}`;
-
-        window.location.href = mailto;
-
-    });
-
-}
 
 
 /* =========================================================
