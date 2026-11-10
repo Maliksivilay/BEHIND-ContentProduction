@@ -2,12 +2,172 @@
    SETTINGS — แก้ตรงนี้ก่อนขึ้นเว็บ
 ========================================================= */
 
+const DEFAULT_LANG = "en";   // ภาษาตอนเปิดเว็บครั้งแรก ("en" หรือ "lo")
 
-/* บอกหน้าเว็บว่า script.js โหลดแล้ว (ถ้าไม่โหลด หัวเว็บจะกลับเป็นแบบธรรมดาเอง) */
+const LITE_MODE = "auto";    // โหมดประหยัดเครื่อง: "auto" = ตรวจเครื่องให้เอง, "on" = เปิดตลอด (ลองดูว่าเครื่องช้าเห็นแบบไหน), "off" = ปิด
 
-window.__heroReady = true;
 
 const root = document.documentElement;
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+/* =========================================================
+   LITE MODE — โหมดประหยัดสำหรับเครื่องสเปกต่ำ
+   ปิดของที่กินเครื่อง (เบลอกระจก navbar, แสงเรืองขยับ, เอียงตามเมาส์) ดาวน้อยลง
+   แต่โลโก้ใหญ่ + การบินเข้า navbar ยังอยู่ครบ
+========================================================= */
+
+function enableLite() {
+
+    root.classList.add("lite");
+
+}
+
+if (LITE_MODE === "on") {
+
+    enableLite();
+
+} else if (LITE_MODE === "auto") {
+
+    const memory   = navigator.deviceMemory || 8;          // แรม (GB) — มีเฉพาะ Chrome/Android
+    const cores    = navigator.hardwareConcurrency || 8;   // จำนวนแกน CPU
+    const saveData = navigator.connection && navigator.connection.saveData;
+
+    if (memory <= 2 || cores <= 2 || saveData) {
+
+        enableLite();
+
+    } else {
+
+        /* วัดความลื่นจริง 1 วินาที หลังเว็บโหลดเสร็จ
+           ถ้าได้ต่ำกว่า 40 เฟรม/วินาที (ปกติ 60) → เปิดโหมดประหยัด */
+
+        window.addEventListener("load", () => {
+
+            setTimeout(() => {
+
+                if (document.hidden) return;
+
+                let frames = 0;
+
+                const start = performance.now();
+
+                const count = now => {
+
+                    frames++;
+
+                    if (now - start < 1000) requestAnimationFrame(count);
+
+                    else if (frames < 40 && !document.hidden) enableLite();
+
+                };
+
+                requestAnimationFrame(count);
+
+            }, 1500);
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   LANGUAGE — English / ລາວ (ปุ่มมุมขวาบน)
+   - ภาษาอังกฤษ = ข้อความปกติใน HTML
+   - ภาษาลาว   = data-lo="..." (ข้อความ), data-lo-alt="..." (alt รูป)
+   - เลือกภาษาไหนไว้ เว็บจะจำไว้ เปิดครั้งหน้าก็ยังเป็นภาษานั้น
+========================================================= */
+
+const LANG_KEY = "behind-lang";
+
+const LANG_ATTRS = ["alt", "aria-label", "content"];
+
+function applyLang(lang) {
+
+    const lo = lang === "lo";
+
+    root.lang = lo ? "lo" : "en";
+
+
+    /* ข้อความ */
+
+    document.querySelectorAll("[data-lo]").forEach(el => {
+
+        if (!el.hasAttribute("data-en")) el.setAttribute("data-en", el.innerHTML);
+
+        el.innerHTML = el.getAttribute(lo ? "data-lo" : "data-en");
+
+    });
+
+
+    /* alt / aria-label / meta content */
+
+    LANG_ATTRS.forEach(attr => {
+
+        document.querySelectorAll(`[data-lo-${attr}]`).forEach(el => {
+
+            const enKey = `data-en-${attr}`;
+
+            if (!el.hasAttribute(enKey)) el.setAttribute(enKey, el.getAttribute(attr) || "");
+
+            el.setAttribute(attr, el.getAttribute(lo ? `data-lo-${attr}` : enKey));
+
+        });
+
+    });
+
+
+    /* ปุ่มเลือกภาษา */
+
+    document.querySelectorAll(".lang-switch button").forEach(button => {
+
+        button.setAttribute("aria-pressed", String(button.dataset.lang === root.lang));
+
+    });
+
+
+    /* บอกส่วนอื่นของเว็บว่าเปลี่ยนภาษาแล้ว (เช่น แคปซูลปุ่ม filter ต้องวัดความกว้างใหม่) */
+
+    window.dispatchEvent(new CustomEvent("langchange", { detail: root.lang }));
+
+}
+
+function savedLang() {
+
+    try {
+
+        return localStorage.getItem(LANG_KEY);
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+document.querySelectorAll(".lang-switch button").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const lang = button.dataset.lang;
+
+        try {
+
+            localStorage.setItem(LANG_KEY, lang);
+
+        } catch (error) {}
+
+        applyLang(lang);
+
+    });
+
+});
+
+applyLang(savedLang() === "lo" || savedLang() === "en" ? savedLang() : DEFAULT_LANG);
 
 
 /* =========================================================
@@ -28,98 +188,226 @@ updateNavbar();
 
 
 /* =========================================================
-   HERO — โลโก้เด้งเข้ามา แล้วค่อย ๆ จางตอนเลื่อนลง
-   (ผูกกับตำแหน่งการเลื่อน: เลื่อนกลับขึ้นโลโก้ก็กลับมา)
+   HERO — "Split" (ดูว่ามีอะไรอยู่เบื้องหลัง)
+   - จอแรก: โลโก้ใหญ่กลางจอ (เด้ง + ลอย + แสงเรือง ใช้ CSS / คอม: เอียงตามเมาส์)
+   - เลื่อนลง: จอค้างไว้ แล้ว
+       1) แสงลอดจากรอยแยกกลางโลโก้
+       2) B·H ครึ่งซ้าย/ขวา เปิดออกเหมือนประตู
+       3) ตัวหนังสือ ເບື້ອງຫຼັງ / BEHIND หลุดออกแล้วเลื่อนลงไป
+       4) ข้อความ All-in-One + ปุ่ม โผล่ขึ้นมาตรงกลาง
+   - เลื่อนกลับขึ้น: ทุกชิ้นกลับมาประกอบเป็นโลโก้เหมือนเดิม
+
+   ลื่นในเครื่องสเปกต่ำ: JS ทำงานเฉพาะตอนเลื่อน และเปลี่ยนแค่ transform + opacity
 ========================================================= */
 
-const hero = document.querySelector(".hero");
+const hero       = document.querySelector(".hero");
+const heroStage  = document.querySelector(".hero-stage");
+const heroLogo   = document.getElementById("heroLogo");
+const heroText   = document.querySelector(".hero-content");
+const heroScroll = document.getElementById("heroScroll");
+const heroTilt   = document.querySelector(".hero-logo-tilt");
 
-if (hero && root.classList.contains("roll")) {
-
-    const heroStage   = hero.querySelector(".hero-stage");
-    const heroLogo    = hero.querySelector(".hero-logo");
-    const heroContent = hero.querySelector(".hero-content");
-    const heroHint    = hero.querySelector(".hero-scroll");
+if (hero && heroStage && heroLogo && heroText && !reduceMotion) {
 
 
     /* ---------- ปรับค่าได้ตรงนี้ ---------- */
 
-    const END_SCALE  = 0.82;   // ขนาดโลโก้ตอนจาง (1 = ไม่ย่อ)
-    const MAX_BLUR   = 10;     // ความเบลอสูงสุดของโลโก้ตอนจาง (px)
-    const LIFT       = 0.05;   // โลโก้ลอยขึ้นเล็กน้อยตอนจาง (สัดส่วนของความสูงจอ)
-    const ANIM_END   = 0.8;    // เลื่อนถึง 80% แอนิเมชันจบ ที่เหลือค้างให้อ่านข้อความ
+    const DOOR_ANGLE = 38;     // องศาที่ครึ่งโลโก้หมุนเปิดออก
+    const TEXT_DROP  = 0.5;    // ตัวหนังสือในโลโก้เลื่อนลงไปไกลแค่ไหน (0.5 = ครึ่งจอ)
+    const MAX_TILT   = 9;      // องศาที่โลโก้เอียงตามเมาส์ (เฉพาะคอม)
 
 
-    const clamp01 = v => Math.min(1, Math.max(0, v));
+    root.classList.add("split");
 
-    let heroTicking = false;
+    const clamp01   = v => Math.min(1, Math.max(0, v));
+    const range     = (p, a, b) => clamp01((p - a) / (b - a));   // p อยู่ช่วง a→b คิดเป็น 0→1
+    const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeIn    = t => t * t * t;
+    const easeOut   = t => 1 - Math.pow(1 - t, 3);
 
-    const updateHero = () => {
+    const lefts  = heroLogo.querySelectorAll(".logo-left");
+    const rights = heroLogo.querySelectorAll(".logo-right");
+    const word   = heroLogo.querySelector(".logo-text");
+    const seam   = heroLogo.querySelector(".logo-seam");
+    const extras = heroLogo.querySelectorAll(".logo-glow, .logo-shadow, .logo-ring");
 
-        heroTicking = false;
-
-        const stageH = heroStage.offsetHeight;
-        const total  = hero.offsetHeight - stageH;
-
-        if (total <= 0) return;
-
-        const scrolled = -hero.getBoundingClientRect().top;
-
-        const q = clamp01(clamp01(scrolled / total) / ANIM_END);
-
-
-        /* โลโก้: ย่อเล็กน้อย + เบลอ + จางหาย */
-
-        const fade  = clamp01((q - 0.08) / 0.55);
-        const scale = 1 - (1 - END_SCALE) * fade;
-        const blur  = MAX_BLUR * fade * fade;
-        const lift  = -fade * stageH * LIFT;
-
-        heroLogo.style.transform =
-            `translate3d(-50%, -50%, 0) translate3d(0, ${lift}px, 0) scale(${scale})`;
-
-        heroLogo.style.opacity = 1 - fade;
-
-        heroLogo.style.filter = blur > 0.1 ? `blur(${blur}px)` : "none";
+    const setAll = (list, prop, value) => list.forEach(el => el.style[prop] = value);
 
 
-        /* ข้อความ: ค่อย ๆ ชัดขึ้นมาแทน */
+    /* วัดขนาด (ทำใหม่ตอนหมุนจอ/ย่อจอเท่านั้น) */
 
-        const t = clamp01((q - 0.4) / 0.4);
+    let heroTop = 0, run = 1, travel = 0, drop = 0;
 
-        heroContent.style.opacity = t;
+    const measure = () => {
 
-        heroContent.style.transform =
-            `translate3d(-50%, -50%, 0) translate3d(0, ${(1 - t) * 36}px, 0)`;
+        heroTop = hero.getBoundingClientRect().top + window.scrollY;
+        run     = Math.max(1, hero.offsetHeight - heroStage.offsetHeight);
 
-        heroContent.style.filter = t < 0.99 ? `blur(${(1 - t) * 10}px)` : "none";
+        /* ครึ่งโลโก้ต้องเลื่อนไกลพอจะพ้นขอบจอ */
+        travel = root.clientWidth / 2 + heroLogo.offsetWidth * 0.1;
 
-        heroContent.style.pointerEvents = t > 0.5 ? "auto" : "none";
-
-
-        /* ข้อความ "เลื่อนลงเพื่อดู" จางหาย */
-
-        if (heroHint) heroHint.style.opacity = 1 - clamp01(q * 8);
+        drop = heroStage.offsetHeight * TEXT_DROP;
 
     };
 
-    const requestHeroUpdate = () => {
 
-        if (!heroTicking) {
+    /* วางทุกชิ้นตามตำแหน่งการเลื่อน (p: 0 = บนสุด, 1 = เล่นจบ) */
 
-            heroTicking = true;
+    let lastP = -1;
 
-            requestAnimationFrame(updateHero);
+    const update = () => {
 
-        }
+        const p = clamp01((window.scrollY - heroTop) / run);
+
+        if (p === lastP) return;
+
+        lastP = p;
+
+
+        /* 1-2) ประตูซ้าย/ขวา */
+
+        const t = range(p, 0, 0.75);
+        const e = easeInOut(t);
+
+        const dx    = (e * travel).toFixed(1);
+        const angle = (e * DOOR_ANGLE).toFixed(2);
+        const fade  = (1 - range(t, 0.65, 1)).toFixed(3);
+
+        setAll(lefts,  "transform", `perspective(1200px) translate3d(-${dx}px, 0, 0) rotateY(${angle}deg)`);
+        setAll(rights, "transform", `perspective(1200px) translate3d(${dx}px, 0, 0) rotateY(-${angle}deg)`);
+        setAll(lefts,  "opacity", fade);
+        setAll(rights, "opacity", fade);
+
+        /* แสงลอดรอยแยก: สว่างทันทีที่เริ่มเลื่อน แล้วจางไปตอนแยกกว้าง */
+        seam.style.opacity = (range(t, 0, 0.04) * (1 - range(t, 0.14, 0.45))).toFixed(3);
+
+        /* แสงเรือง/เงา/วงแหวน จางออกตอนเริ่มแยก */
+        setAll(extras, "opacity", (1 - range(t, 0, 0.18)).toFixed(3));
+
+
+        /* 3) ตัวหนังสือในโลโก้ เลื่อนลงไป */
+
+        const fall = easeIn(range(p, 0, 0.6));
+
+        word.style.transform = `translate3d(0, ${(fall * drop).toFixed(1)}px, 0)`;
+        word.style.opacity   = (1 - range(p, 0.25, 0.6)).toFixed(3);
+
+
+        /* 4) ข้อความ All-in-One โผล่ขึ้นมา */
+
+        const show = easeOut(range(p, 0.15, 0.8));
+
+        heroText.style.opacity       = show.toFixed(3);
+        heroText.style.transform     = `scale(${(0.9 + 0.1 * show).toFixed(4)})`;
+        heroText.style.pointerEvents = show > 0.6 ? "auto" : "none";
+
+        /* โลโก้ไม่บังปุ่มตอนแยกเสร็จแล้ว */
+        heroLogo.style.pointerEvents = t >= 1 ? "none" : "";
+
+
+        if (heroScroll) heroScroll.style.opacity = (1 - range(p, 0, 0.15)).toFixed(3);
 
     };
 
-    window.addEventListener("scroll", requestHeroUpdate, { passive: true });
-    window.addEventListener("resize", requestHeroUpdate);
-    window.addEventListener("load", requestHeroUpdate);
+    let ticking = false;
 
-    updateHero();
+    const requestUpdate = () => {
+
+        if (ticking) return;
+
+        ticking = true;
+
+        requestAnimationFrame(() => {
+
+            ticking = false;
+
+            update();
+
+        });
+
+    };
+
+    const remeasure = () => {
+
+        measure();
+
+        lastP = -1;
+
+        update();
+
+    };
+
+    measure();
+
+    update();
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", remeasure);
+    window.addEventListener("load", remeasure);
+
+
+    /* ปุ่ม "Scroll down": เลื่อนไปจุดที่ข้อความโผล่ครบพอดี */
+
+    if (heroScroll) {
+
+        heroScroll.addEventListener("click", event => {
+
+            event.preventDefault();
+
+            window.scrollTo({ top: heroTop + run * 0.85, behavior: "smooth" });
+
+        });
+
+    }
+
+
+    /* ---------- เอียงตามเมาส์ (เฉพาะคอมที่ไม่ใช่โหมดประหยัด) ---------- */
+
+    if (heroTilt && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+
+        let tiltTicking = false;
+        let mouseX = 0;
+        let mouseY = 0;
+
+        const applyTilt = () => {
+
+            tiltTicking = false;
+
+            if (root.classList.contains("lite") || window.scrollY > heroTop + 40) {
+
+                heroTilt.style.transform = "";
+
+                return;
+
+            }
+
+            heroTilt.style.transform =
+                `perspective(1000px) rotateX(${(-mouseY * MAX_TILT).toFixed(2)}deg) rotateY(${(mouseX * MAX_TILT).toFixed(2)}deg)`;
+
+        };
+
+        window.addEventListener("pointermove", event => {
+
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+
+            if (!tiltTicking) {
+
+                tiltTicking = true;
+
+                requestAnimationFrame(applyTilt);
+
+            }
+
+        }, { passive: true });
+
+        root.addEventListener("mouseleave", () => {
+
+            heroTilt.style.transform = "";
+
+        });
+
+    }
 
 }
 
@@ -245,9 +533,12 @@ function movePill(button) {
 
     if (!filterPill || !button) return;
 
-    filterPill.style.width = button.offsetWidth + "px";
+    /* วางแคปซูลทับปุ่มที่เลือก (รองรับทั้งแบบแถวเดียว และแบบ 2 แถวบนมือถือ) */
 
-    filterPill.style.transform = `translateX(${button.offsetLeft}px)`;
+    filterPill.style.width  = button.offsetWidth + "px";
+    filterPill.style.height = button.offsetHeight + "px";
+
+    filterPill.style.transform = `translate(${button.offsetLeft}px, ${button.offsetTop}px)`;
 
 }
 
@@ -262,6 +553,8 @@ movePill(currentFilter());
 window.addEventListener("resize", () => movePill(currentFilter()));
 
 window.addEventListener("load", () => movePill(currentFilter()));
+
+window.addEventListener("langchange", () => movePill(currentFilter()));   /* เปลี่ยนภาษา → ความกว้างปุ่มเปลี่ยน */
 
 filters.forEach(filter => {
 
@@ -316,228 +609,350 @@ filters.forEach(filter => {
 
 
 /* =========================================================
-   GALAXY BACKGROUND
+   EVENTS — การ์ดงานที่กำลังจะไปถ่าย
+   - คลิก / กด Enter ที่การ์ด → เปิดหน้ารายละเอียด (<dialog id="..."> ที่ตรงกับ data-event)
+   - ปิดได้ 3 ทาง: ปุ่ม ✕ / คลิกพื้นที่มืดรอบ ๆ / กด Esc
+   - ป้ายนับถอยหลัง "อีกกี่วัน" คำนวณจาก data-event-date="ปี-เดือน-วัน"
+========================================================= */
+
+document.querySelectorAll(".event-card[data-event]").forEach(card => {
+
+    const dialog = document.getElementById(card.dataset.event);
+
+    if (!dialog || typeof dialog.showModal !== "function") return;
+
+    const open = () => {
+
+        if (!dialog.open) dialog.showModal();
+
+    };
+
+    card.addEventListener("click", open);
+
+    card.addEventListener("keydown", event => {
+
+        if (event.key === "Enter" || event.key === " ") {
+
+            event.preventDefault();
+
+            open();
+
+        }
+
+    });
+
+});
+
+document.querySelectorAll(".event-modal").forEach(dialog => {
+
+    /* คลิกพื้นที่มืดรอบ ๆ (นอกกล่อง) → ปิด */
+    dialog.addEventListener("click", event => {
+
+        if (event.target === dialog) dialog.close();
+
+    });
+
+    /* ปุ่มที่มี data-close (✕ และปุ่ม Contact) → ปิด */
+    dialog.querySelectorAll("[data-close]").forEach(button => {
+
+        button.addEventListener("click", () => dialog.close());
+
+    });
+
+});
+
+
+/* ป้ายนับถอยหลัง (เปลี่ยนตามภาษาที่เลือกด้วย) */
+
+function updateEventCountdowns() {
+
+    const lo = root.lang === "lo";
+
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    document.querySelectorAll("[data-event-date]").forEach(el => {
+
+        const [y, m, d] = el.dataset.eventDate.split("-").map(Number);
+
+        const days = Math.round((new Date(y, m - 1, d) - today) / 86400000);
+
+        let text;
+
+        if (days > 1)        text = lo ? `ອີກ ${days} ມື້` : `In ${days} days`;
+        else if (days === 1) text = lo ? "ມື້ອື່ນ" : "Tomorrow";
+        else if (days === 0) text = lo ? "ມື້ນີ້" : "Today";
+        else                 text = lo ? "ຖ່າຍແລ້ວ" : "Covered";
+
+        el.textContent = text;
+
+        const box = el.closest(".event-card, .event-modal");
+
+        if (box) box.classList.toggle("is-past", days < 0);
+
+    });
+
+}
+
+updateEventCountdowns();
+
+window.addEventListener("langchange", updateEventCountdowns);
+
+
+/* =========================================================
+   GALAXY BACKGROUND — ดาวลอยไปมา + กระพริบทีละดวง (แบบช่วงแรก)
+
+   ทำให้เบาเครื่อง (หน้าตาเหมือนเดิม):
+   - เตรียม "รูปดาว" แต่ละขนาดไว้ก่อนครั้งเดียว แล้วแปะลงไป
+     แทนการวาดวงกลมใหม่ทุกดวงทุกเฟรม
+   - วาด 30 ครั้ง/วินาที (ดาวขยับช้า ตาแยกไม่ออกจาก 60)
+     โหมดประหยัด: ดาวน้อยลง + วาด 20 ครั้ง/วินาที
+   - สลับไปแท็บอื่น เบราว์เซอร์หยุดวาดให้เอง
 ========================================================= */
 
 const canvas = document.getElementById("galaxyCanvas");
 
-const ctx = canvas.getContext("2d");
+const ctx = canvas ? canvas.getContext("2d") : null;
+
+
+/* ---------- ปรับค่าได้ตรงนี้ ---------- */
+
+const STAR_FPS      = 30;    // วาดดาวกี่ครั้งต่อวินาที
+const STAR_FPS_LITE = 20;    // ...ในโหมดประหยัด
+const STAR_MAX      = 280;   // จำนวนดาวสูงสุด
+const STAR_MAX_LITE = 150;   // ...ในโหมดประหยัด
+const STAR_SPEED    = 0.22;  // ความเร็วดาวลอย (ยิ่งมากยิ่งเร็ว)
+
 
 let stars = [];
 
-let width;
-let height;
+let width  = 0;
+let height = 0;
 
 
-/* =========================================================
-   RESIZE CANVAS
-========================================================= */
+/* ---------- รูปดาวสำเร็จรูป (ทำครั้งเดียว) ---------- */
+
+const SPRITE_STEPS = 12;     // แบ่งขนาดดาวเป็นกี่ขนาด
+
+const sprites = [];
+
+function makeSprite(radius) {
+
+    const glow = radius > 1.2;   // ดาวใหญ่มี Glow เล็ก ๆ
+
+    const reach = glow ? radius * 3 : radius;
+
+    const size = Math.ceil(reach * 2) + 4;
+
+    const sprite = document.createElement("canvas");
+
+    sprite.width = sprite.height = size;
+
+    const s = sprite.getContext("2d");
+
+    const c = size / 2;
+
+    if (glow) {
+
+        s.beginPath();
+        s.arc(c, c, radius * 3, 0, Math.PI * 2);
+        s.fillStyle = "rgba(255, 255, 255, 0.06)";
+        s.fill();
+
+    }
+
+    s.beginPath();
+    s.arc(c, c, radius, 0, Math.PI * 2);
+    s.fillStyle = "#fff";
+    s.fill();
+
+    return { canvas: sprite, half: c };
+
+}
+
+/* ขนาดดาวมีตั้งแต่ 0.3 ถึง 3.4 px */
+
+for (let i = 0; i < SPRITE_STEPS; i++) {
+
+    sprites.push(makeSprite(0.3 + (3.1 * i) / (SPRITE_STEPS - 1)));
+
+}
+
+function spriteFor(radius) {
+
+    const i = Math.round(((radius - 0.3) / 3.1) * (SPRITE_STEPS - 1));
+
+    return sprites[Math.min(SPRITE_STEPS - 1, Math.max(0, i))];
+
+}
+
+
+/* ---------- ดาว 1 ดวง ---------- */
+
+function newStar() {
+
+    /* ดาวมีหลายขนาด */
+
+    const radius = Math.random() > 0.97
+        ? Math.random() * 2.2 + 1.2      // ดาวใหญ่
+        : Math.random() * 1.2 + 0.3;     // ดาวเล็ก
+
+    return {
+
+        x: Math.random() * width,
+        y: Math.random() * height,
+
+        sprite: spriteFor(radius),
+
+        /* ความเร็ว (ลอยไปมาช้า ๆ คนละทิศ) */
+        speedX: (Math.random() - 0.5) * STAR_SPEED,
+        speedY: (Math.random() - 0.5) * STAR_SPEED,
+
+        /* ความสว่าง + การกระพริบ */
+        alpha: Math.random() * 0.7 + 0.2,
+        twinkleSpeed: Math.random() * 0.012 + 0.002,
+        twinkleDirection: Math.random() > 0.5 ? 1 : -1,
+
+        /* ดาวบางดวงสว่างเป็นพิเศษ */
+        brightness: Math.random() > 0.92 ? 1 : 0.65
+
+    };
+
+}
+
+const isLite = () => root.classList.contains("lite");
+
+function createStars() {
+
+    const density = width < 768 ? 8500 : 6500;
+
+    const amount = Math.min(Math.floor((width * height) / density), isLite() ? STAR_MAX_LITE : STAR_MAX);
+
+    stars = [];
+
+    for (let i = 0; i < amount; i++) stars.push(newStar());
+
+}
+
+
+/* ---------- ขนาด canvas ---------- */
 
 function resizeCanvas() {
 
-    width = canvas.width = window.innerWidth;
+    if (!canvas) return;
 
-    height = canvas.height = window.innerHeight;
+    const w = window.innerWidth;
+
+    /* สูงเผื่อแถบเบราว์เซอร์มือถือหด/ขยาย จะได้ไม่ต้องสร้างดาวใหม่บ่อย ๆ */
+    const h = Math.max(window.innerHeight, screen.height || 0);
+
+    if (w === width && h <= height) return;
+
+    width  = canvas.width  = w;
+    height = canvas.height = h;
+
+    canvas.style.width  = w + "px";
+    canvas.style.height = h + "px";
 
     createStars();
 
 }
 
-window.addEventListener("resize", resizeCanvas);
+
+/* ---------- วาดดาว ---------- */
+
+function drawStars(step) {
+
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < stars.length; i++) {
+
+        const star = stars[i];
 
 
-/* =========================================================
-   STAR CLASS
-========================================================= */
+        /* เคลื่อนที่ช้า ๆ (ออกนอกจอ → กลับเข้ามาอีกฝั่ง) */
 
-class Star {
+        star.x += star.speedX * step;
+        star.y += star.speedY * step;
 
-    constructor() {
+        if (star.x < -10) star.x = width + 10;
+        else if (star.x > width + 10) star.x = -10;
 
-        this.reset();
-
-    }
-
-    reset() {
-
-        this.x = Math.random() * width;
-
-        this.y = Math.random() * height;
-
-
-        /* ดาวมีหลายขนาด */
-
-        const sizeRandom = Math.random();
-
-        if (sizeRandom > 0.97) {
-
-            /* ดาวใหญ่ */
-
-            this.size = Math.random() * 2.2 + 1.2;
-
-        } else {
-
-            /* ดาวเล็ก */
-
-            this.size = Math.random() * 1.2 + 0.3;
-
-        }
-
-
-        /* ความเร็ว */
-
-        this.speedX = (Math.random() - 0.5) * 0.22;
-
-        this.speedY = (Math.random() - 0.5) * 0.22;
-
-
-        /* ความสว่าง */
-
-        this.alpha = Math.random() * 0.7 + 0.2;
-
-
-        /* การกระพริบ */
-
-        this.twinkleSpeed = Math.random() * 0.012 + 0.002;
-
-        this.twinkleDirection = Math.random() > 0.5 ? 1 : -1;
-
-
-        /* ดาวบางดวงมีความสว่างมาก */
-
-        this.brightness = Math.random() > 0.92 ? 1 : 0.65;
-
-    }
-
-    update() {
-
-        /* เคลื่อนที่ช้า ๆ */
-
-        this.x += this.speedX;
-
-        this.y += this.speedY;
-
-
-        /* ถ้าออกนอกจอ ให้กลับเข้ามาอีกฝั่ง */
-
-        if (this.x < -10) this.x = width + 10;
-
-        if (this.x > width + 10) this.x = -10;
-
-        if (this.y < -10) this.y = height + 10;
-
-        if (this.y > height + 10) this.y = -10;
+        if (star.y < -10) star.y = height + 10;
+        else if (star.y > height + 10) star.y = -10;
 
 
         /* กระพริบ */
 
-        this.alpha += this.twinkleSpeed * this.twinkleDirection;
+        star.alpha += star.twinkleSpeed * star.twinkleDirection * step;
 
-        if (this.alpha >= 0.9) this.twinkleDirection = -1;
-
-        if (this.alpha <= 0.15) this.twinkleDirection = 1;
-
-    }
-
-    draw() {
-
-        ctx.beginPath();
-
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-
-        ctx.fillStyle =
-            `rgba(255, 255, 255, ${this.alpha * this.brightness})`;
-
-        ctx.fill();
+        if (star.alpha >= 0.9) { star.alpha = 0.9; star.twinkleDirection = -1; }
+        if (star.alpha <= 0.15) { star.alpha = 0.15; star.twinkleDirection = 1; }
 
 
-        /* ดาวใหญ่มี Glow เล็ก ๆ */
+        ctx.globalAlpha = star.alpha * star.brightness;
 
-        if (this.size > 1.2) {
-
-            ctx.beginPath();
-
-            ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-
-            ctx.fillStyle =
-                `rgba(255, 255, 255, ${this.alpha * 0.05})`;
-
-            ctx.fill();
-
-        }
+        ctx.drawImage(star.sprite.canvas, star.x - star.sprite.half, star.y - star.sprite.half);
 
     }
+
+    ctx.globalAlpha = 1;
 
 }
 
+let lastDraw = 0;
 
-/* =========================================================
-   CREATE STARS
-========================================================= */
-
-function createStars() {
-
-    stars = [];
-
-    /*
-       จำนวนดาวตามขนาดหน้าจอ
-       Desktop = เยอะ / Mobile = ลดลงเพื่อ Performance
-    */
-
-    let amount = Math.floor((width * height) / 6500);
-
-    if (window.innerWidth < 768) {
-
-        amount = Math.floor((width * height) / 8500);
-
-    }
-
-    /* จำกัดจำนวนสูงสุด */
-
-    amount = Math.min(amount, 280);
-
-    for (let i = 0; i < amount; i++) {
-
-        stars.push(new Star());
-
-    }
-
-}
-
-
-/* =========================================================
-   ANIMATION
-========================================================= */
-
-function animate() {
-
-    ctx.clearRect(0, 0, width, height);
-
-    /* พื้นหลังดำ */
-
-    ctx.fillStyle = "#000";
-
-    ctx.fillRect(0, 0, width, height);
-
-    /* วาดดาว */
-
-    stars.forEach(star => {
-
-        star.update();
-
-        star.draw();
-
-    });
+function animate(now) {
 
     requestAnimationFrame(animate);
 
+    const fps = isLite() ? STAR_FPS_LITE : STAR_FPS;
+
+    const elapsed = now - lastDraw;
+
+    if (elapsed < 1000 / fps - 2) return;
+
+    /* ขยับตามเวลาจริง (ความเร็วเท่ากับแบบเดิมที่ 60 เฟรม/วินาที) */
+    const step = Math.min(elapsed / (1000 / 60), 4);
+
+    lastDraw = now;
+
+    drawStars(step);
+
 }
 
 
-/* =========================================================
-   START GALAXY
-========================================================= */
+/* ---------- เริ่ม ---------- */
 
-resizeCanvas();
+if (canvas && ctx) {
 
-animate();
+    let resizeTimer;
+
+    window.addEventListener("resize", () => {
+
+        clearTimeout(resizeTimer);
+
+        resizeTimer = setTimeout(resizeCanvas, 150);
+
+    });
+
+    resizeCanvas();
+
+    if (reduceMotion) {
+
+        drawStars(0);   // ปิดแอนิเมชันในเครื่อง → ดาวอยู่นิ่ง
+
+    } else {
+
+        requestAnimationFrame(now => {
+
+            lastDraw = now;
+
+            requestAnimationFrame(animate);
+
+        });
+
+    }
+
+}
