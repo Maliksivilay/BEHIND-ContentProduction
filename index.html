@@ -1,29 +1,23 @@
 <!DOCTYPE html>
-<html lang="lo">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#060607">
 
-    <title>BEHIND-ເບື້ອງຫຼັງ — ສະຕູດິໂອຕັດຕໍ່ວິດີໂອ</title>
+    <!-- =====================================================
+         2 ภาษา: English (หลัก) / ລາວ
+         - ข้อความภาษาอังกฤษ เขียนไว้ใน HTML ตามปกติ
+         - ข้อความภาษาลาว ใส่ไว้ใน data-lo="..." ของแท็กเดียวกัน
+           (alt ของรูป ใช้ data-lo-alt="...")
+         - อยากแก้ข้อความ: แก้ทั้ง 2 ที่ให้ตรงกัน
+    ====================================================== -->
+
+    <title data-lo="BEHIND-ເບື້ອງຫຼັງ — ສະຕູດິໂອຕັດຕໍ່ວິດີໂອ">BEHIND — Video Editing Studio</title>
 
     <meta name="description"
-          content="ຮັບຕັດຕໍ່ວິດີໂອແບບມືອາຊີບ ສຳລັບ TikTok, Reels ແລະ ສື່ສັງຄົມອອນລາຍ.">
-
-    <!-- เปิดโหมดแอนิเมชันหัวเว็บตั้งแต่ก่อนวาดหน้า (กันภาพกระตุก)
-         ถ้า script.js โหลดไม่สำเร็จ จะกลับเป็นเลย์เอาต์ธรรมดาให้เอง -->
-    <script>
-        (function () {
-            var root = document.documentElement;
-            root.classList.add("js");
-            if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-                root.classList.add("roll");
-                setTimeout(function () {
-                    if (!window.__heroReady) root.classList.remove("roll");
-                }, 3000);
-            }
-        })();
-    </script>
+          content="Professional video editing for TikTok, Reels and social media."
+          data-lo-content="ຮັບຕັດຕໍ່ວິດີໂອແບບມືອາຊີບ ສຳລັບ TikTok, Reels ແລະ ສື່ສັງຄົມອອນລາຍ.">
 
     <link rel="stylesheet" href="style.css">
 
@@ -36,7 +30,11 @@
 
 <body>
 
-<canvas id="galaxyCanvas"></canvas>
+<!-- พื้นหลังดาว: ดาวลอยไปมา + กระพริบทีละดวง (วาดโดย script.js) -->
+
+<div class="galaxy" aria-hidden="true">
+    <canvas id="galaxyCanvas"></canvas>
+</div>
 
 <!-- =========================
      NAVIGATION
@@ -51,30 +49,51 @@
         ========================== -->
 
         <img src="Behind.jpeg"
-             alt="ໂລໂກ້ບໍລິສັດ"
+             alt="BEHIND logo"
+             data-lo-alt="ໂລໂກ້ບໍລິສັດ"
              class="logo">
 
-        <span>BEHIND-ເບື້ອງຫຼັງ</span>
+        <!-- ชื่อแบรนด์: โชว์ทั้ง 2 คำเสมอ ไม่ว่าจะเลือกภาษาไหน -->
+        <span class="brand-name">BEHIND <span lang="lo">ເບື້ອງຫຼັງ</span></span>
 
     </a>
 
     <nav>
-        <a href="#works">ຜົນງານ</a>
-        <a href="#services">ບໍລິການ</a>
-        <a href="#about">ກ່ຽວກັບ</a>
-        <a href="#contact">ຕິດຕໍ່</a>
+        <a href="#works" data-lo="ຜົນງານ">Work</a>
+        <a href="#services" data-lo="ບໍລິການ">Services</a>
+        <a href="#about" data-lo="ກ່ຽວກັບ">About</a>
+        <a href="#contact" data-lo="ຕິດຕໍ່">Contact</a>
     </nav>
 
-    <a href="#contact" class="nav-button">
-        ຕິດຕໍ່ສອບຖາມ
-    </a>
+    <div class="nav-actions">
+
+        <!-- ปุ่มเปลี่ยนภาษา (มุมขวาบน) -->
+
+        <div class="lang-switch" role="group" aria-label="Language">
+            <span class="lang-pill" aria-hidden="true"></span>
+            <button type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang="lo" aria-pressed="false" lang="lo">ລາວ</button>
+        </div>
+
+        <a href="#contact" class="nav-button" data-lo="ຕິດຕໍ່ສອບຖາມ">Contact us</a>
+
+    </div>
 
 </header>
 
 
 <!-- =========================
-     HERO
-     โลโก้เด้งเข้ามากลางจอ → เลื่อนลงแล้วค่อย ๆ จาง → ข้อความโผล่ขึ้นมา
+     HERO — "Split" (ดูว่ามีอะไรอยู่เบื้องหลัง)
+     จอแรก: โลโก้ใหญ่กลางจอ (เด้งเข้ามา + ลอยขึ้นลง + แสงเรือง + เอียงตามเมาส์)
+     เลื่อนลง: แสงลอดจากรอยแยกกลางโลโก้ → B·H แยกออกซ้าย-ขวาเหมือนประตู
+               ตัวหนังสือ ເບື້ອງຫຼັງ / BEHIND หลุดออกแล้วเลื่อนลงไป
+               → เจอข้อความ All-in-One ที่ซ่อนอยู่ข้างหลัง
+
+     ชิ้นส่วนโลโก้ 3 ไฟล์ (ตัดมาจาก Behind.jpeg):
+       Behind-left.png  = ครึ่งซ้ายของ B·H
+       Behind-right.png = ครึ่งขวาของ B·H
+       Behind-text.png  = ตัวหนังสือ ເບື້ອງຫຼັງ / BEHIND
+     ถ้าเปลี่ยนโลโก้ ต้องทำ 3 ไฟล์นี้ใหม่ด้วย (ขนาดเท่ารูปเดิม พื้นโปร่งใส)
 ========================== -->
 
 <section class="hero" id="top">
@@ -86,16 +105,68 @@
         <div class="hero-grid" aria-hidden="true"></div>
 
 
+        <!-- TEXT (ซ่อนอยู่ข้างหลังโลโก้) -->
+
+        <div class="hero-content" id="hero-text">
+
+            <p class="eyebrow" data-lo="ສະຕູດິໂອຕັດຕໍ່ວິດີໂອ">
+                Video Editing Studio
+            </p>
+
+            <h1 lang="en">
+                <span>All-in-One</span><br>
+                Content Production.
+            </h1>
+
+            <p class="hero-description"
+               data-lo="ຮັບ: ຕັດຕໍ່ | ພາກສຽງ | ຄິດຄອນເທັ້ນ | ຖ່າຍນອກສະຖານທີ່ | ອອກແບບ.">
+                Editing | Voice-over | Content Ideas | On-location Shoots | Design.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#works" class="button button-light" data-lo="ເບິ່ງຜົນງານຂອງເຮົາ">
+                    See Our Work
+                </a>
+
+                <a href="#contact" class="button button-outline" data-lo="ຂໍໃບສະເໜີລາຄາ">
+                    Get a Quote
+                </a>
+
+            </div>
+
+        </div>
+
+
         <!-- BIG LOGO -->
 
-        <div class="hero-logo">
+        <div class="hero-logo" id="heroLogo"
+             role="img"
+             aria-label="BEHIND logo"
+             data-lo-aria-label="ໂລໂກ້ BEHIND ເບື້ອງຫຼັງ">
 
             <div class="hero-logo-pop">
 
-                <div class="hero-logo-float">
+                <div class="hero-logo-tilt">
 
-                    <img src="Behind.jpeg"
-                         alt="ໂລໂກ້ BEHIND-ເບື້ອງຫຼັງ">
+                    <div class="hero-logo-card">
+
+                        <span class="logo-glow"></span>
+                        <span class="logo-shadow"></span>
+                        <span class="logo-ring"></span>
+
+                        <!-- พื้นดำของโลโก้ ผ่าครึ่งซ้าย/ขวา -->
+                        <span class="logo-plate logo-left"></span>
+                        <span class="logo-plate logo-right"></span>
+
+                        <!-- แสงลอดรอยแยก -->
+                        <span class="logo-seam"></span>
+
+                        <img class="logo-piece logo-left" src="Behind-left.png" alt="">
+                        <img class="logo-piece logo-right" src="Behind-right.png" alt="">
+                        <img class="logo-piece logo-text" src="Behind-text.png" alt="">
+
+                    </div>
 
                 </div>
 
@@ -104,42 +175,10 @@
         </div>
 
 
-        <!-- TEXT -->
-
-        <div class="hero-content">
-
-            <p class="eyebrow">
-                ສະຕູດິໂອຕັດຕໍ່ວິດີໂອ
-            </p>
-
-            <h1>
-                <span>All-in-One</span><br>
-                Content Production.
-            </h1>
-
-            <p class="hero-description">
-                ຮັບ: ຕັດຕໍ່ | ພາກສຽງ | ຄິດຄອນເທັ້ນ | ຖ່າຍນອກສະຖານທີ່ | ອອກແບບ.
-            </p>
-
-            <div class="hero-buttons">
-
-                <a href="#works" class="button button-light">
-                    ເບິ່ງຜົນງານຂອງເຮົາ
-                </a>
-
-                <a href="#contact" class="button button-outline">
-                    ຂໍໃບສະເໜີລາຄາ
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="hero-scroll" aria-hidden="true">
-            <span class="mouse"></span>
-            ເລື່ອນລົງເພື່ອເບິ່ງ
-        </div>
+        <a href="#intro" class="hero-scroll" id="heroScroll">
+            <span class="mouse" aria-hidden="true"></span>
+            <span data-lo="ເລື່ອນລົງເພື່ອເບິ່ງ">Scroll down</span>
+        </a>
 
     </div>
 
@@ -150,23 +189,24 @@
      INTRO
 ========================== -->
 
-<section class="intro">
+<section class="intro" id="intro">
 
     <div class="intro-content">
 
-        <p class="section-label">
-            ສິ່ງທີ່ເຮົາເຮັດ
+        <p class="section-label" data-lo="ສິ່ງທີ່ເຮົາເຮັດ">
+            What We Do
         </p>
 
-        <h2>
-            ຄອນເທັ້ນທີ່<br>
-            <span>ດຶງດູດຄວາມສົນໃຈ.</span>
+        <h2 data-lo="ຄອນເທັ້ນທີ່<br><span>ດຶງດູດຄວາມສົນໃຈ.</span>">
+            Content that<br>
+            <span>grabs attention.</span>
         </h2>
 
-        <p class="intro-text">
-            ເຮົາຊ່ວຍແບຣນ, ຄຣີເອເຕີ ແລະ ທຸລະກິດ ປ່ຽນວິດີໂອທຳມະດາ
-            ໃຫ້ກາຍເປັນຄອນເທັ້ນທີ່ໜ້າສົນໃຈ ອອກແບບມາເພື່ອ
-            ແພລັດຟອມສື່ສັງຄົມອອນລາຍໃນປັດຈຸບັນ.
+        <p class="intro-text"
+           data-lo="ເຮົາຊ່ວຍແບຣນ, ຄຣີເອເຕີ ແລະ ທຸລະກິດ ປ່ຽນວິດີໂອທຳມະດາ ໃຫ້ກາຍເປັນຄອນເທັ້ນທີ່ໜ້າສົນໃຈ ອອກແບບມາເພື່ອ ແພລັດຟອມສື່ສັງຄົມອອນລາຍໃນປັດຈຸບັນ.">
+            We help brands, creators and businesses turn ordinary footage
+            into content people stop scrolling for, made for
+            today's social media platforms.
         </p>
 
         <div class="chips">
@@ -185,7 +225,8 @@
     <div class="intro-image">
 
         <img src="Woman-live-streaming-in-a-train-station.jpg"
-             alt="ຮູບພາບປະກອບ">
+             alt="Woman live streaming in a train station"
+             data-lo-alt="ຮູບພາບປະກອບ">
 
     </div>
 
@@ -201,18 +242,18 @@
     <div class="section-header">
 
         <div>
-            <p class="section-label">
-                ລູກຄ້າຂອງເຮົາ
+            <p class="section-label" data-lo="ລູກຄ້າຂອງເຮົາ">
+                Our Clients
             </p>
 
-            <h2>
-                ແບຣນທີ່<br>
-                <span>ໄວ້ວາງໃຈເຮົາ.</span>
+            <h2 data-lo="ແບຣນທີ່<br><span>ໄວ້ວາງໃຈເຮົາ.</span>">
+                Brands that<br>
+                <span>trust us.</span>
             </h2>
         </div>
 
-        <p class="section-description">
-            ທຸລະກິດ ແລະ ແບຣນທີ່ເຄີຍຮ່ວມງານກັບເຮົາ.
+        <p class="section-description" data-lo="ທຸລະກິດ ແລະ ແບຣນທີ່ເຄີຍຮ່ວມງານກັບເຮົາ.">
+            Businesses and brands we've worked with.
         </p>
 
     </div>
@@ -237,7 +278,8 @@
 
                 <div class="client">
                     <img src="ANC.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 01"
+                         alt="Client logo 01"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 01"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 01</span>
@@ -245,7 +287,8 @@
 
                 <div class="client">
                     <img src="BABY BRIGHT.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 02"
+                         alt="Client logo 02"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 02"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 02</span>
@@ -253,7 +296,8 @@
 
                 <div class="client">
                     <img src="Banchit smoothies.png"
-                         alt="ໂລໂກ້ລູກຄ້າ 03"
+                         alt="Client logo 03"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 03"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 03</span>
@@ -261,7 +305,8 @@
 
                 <div class="client">
                     <img src="Behind.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 04"
+                         alt="Client logo 04"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 04"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 04</span>
@@ -269,7 +314,8 @@
 
                 <div class="client">
                     <img src="BONCHON.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 05"
+                         alt="Client logo 05"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 05"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 05</span>
@@ -277,7 +323,8 @@
 
                 <div class="client">
                     <img src="CLEARMEN.png"
-                         alt="ໂລໂກ້ລູກຄ້າ 06"
+                         alt="Client logo 06"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 06"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 06</span>
@@ -285,7 +332,8 @@
 
                 <div class="client">
                     <img src="PRIME.PNG"
-                         alt="ໂລໂກ້ລູກຄ້າ 07"
+                         alt="Client logo 07"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 07"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 07</span>
@@ -293,7 +341,8 @@
 
                 <div class="client">
                     <img src="CLOUDSTORE.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 08"
+                         alt="Client logo 08"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 08"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 08</span>
@@ -301,7 +350,8 @@
 
                 <div class="client">
                     <img src="COLGATE.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 09"
+                         alt="Client logo 09"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 09"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 09</span>
@@ -309,7 +359,8 @@
 
                 <div class="client">
                     <img src="COMCOM.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 10"
+                         alt="Client logo 10"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 10"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 10</span>
@@ -317,7 +368,8 @@
 
                 <div class="client">
                     <img src="DANCE.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 11"
+                         alt="Client logo 11"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 11"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 11</span>
@@ -325,7 +377,8 @@
 
                 <div class="client">
                     <img src="DEE LIGHT.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 12"
+                         alt="Client logo 12"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 12"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 12</span>
@@ -344,7 +397,8 @@
 
                 <div class="client">
                     <img src="DVP LANGUAGE CENTOR.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 13"
+                         alt="Client logo 13"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 13"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 13</span>
@@ -352,7 +406,8 @@
 
                 <div class="client">
                     <img src="FINFOODFUN.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 14"
+                         alt="Client logo 14"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 14"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 14</span>
@@ -360,7 +415,8 @@
 
                 <div class="client">
                     <img src="GAGA.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 15"
+                         alt="Client logo 15"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 15"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 15</span>
@@ -368,7 +424,8 @@
 
                 <div class="client">
                     <img src="GARNEIR.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 16"
+                         alt="Client logo 16"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 16"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 16</span>
@@ -376,7 +433,8 @@
 
                 <div class="client">
                     <img src="GREEN LUANGPHABANG.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 17"
+                         alt="Client logo 17"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 17"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 17</span>
@@ -384,7 +442,8 @@
 
                 <div class="client">
                     <img src="loc_around.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 18"
+                         alt="Client logo 18"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 18"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 18</span>
@@ -392,7 +451,8 @@
 
                 <div class="client">
                     <img src="LOGOARTTOY.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 19"
+                         alt="Client logo 19"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 19"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 19</span>
@@ -400,7 +460,8 @@
 
                 <div class="client">
                     <img src="MAKAME.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 20"
+                         alt="Client logo 20"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 20"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 20</span>
@@ -408,7 +469,8 @@
 
                 <div class="client">
                     <img src="MNV.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 21"
+                         alt="Client logo 21"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 21"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 21</span>
@@ -416,7 +478,8 @@
 
                 <div class="client">
                     <img src="MR SELECTION.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 22"
+                         alt="Client logo 22"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 22"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 22</span>
@@ -424,7 +487,8 @@
 
                 <div class="client">
                     <img src="MUM KUB MUM.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 23"
+                         alt="Client logo 23"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 23"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 23</span>
@@ -432,7 +496,8 @@
 
                 <div class="client">
                     <img src="NAPA.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 24"
+                         alt="Client logo 24"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 24"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 24</span>
@@ -451,7 +516,8 @@
 
                 <div class="client">
                     <img src="NOUPHUEAK.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 25"
+                         alt="Client logo 25"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 25"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 25</span>
@@ -459,7 +525,8 @@
 
                 <div class="client">
                     <img src="OMAIDY.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 26"
+                         alt="Client logo 26"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 26"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 26</span>
@@ -467,7 +534,8 @@
 
                 <div class="client">
                     <img src="PARKSON.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 27"
+                         alt="Client logo 27"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 27"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 27</span>
@@ -475,7 +543,8 @@
 
                 <div class="client">
                     <img src="SIZZLER.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 28"
+                         alt="Client logo 28"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 28"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 28</span>
@@ -483,7 +552,8 @@
 
                 <div class="client">
                     <img src="THE COFFEE CLUB.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 29"
+                         alt="Client logo 29"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 29"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 29</span>
@@ -491,7 +561,8 @@
 
                 <div class="client">
                     <img src="SMALL-B.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 30"
+                         alt="Client logo 30"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 30"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 30</span>
@@ -499,7 +570,8 @@
 
                 <div class="client">
                     <img src="THE SUNSET.jpeg"
-                         alt="ໂລໂກ້ລູກຄ້າ 31"
+                         alt="Client logo 31"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 31"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 31</span>
@@ -507,7 +579,8 @@
 
                 <div class="client">
                     <img src="VITAMILK.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 32"
+                         alt="Client logo 32"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 32"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 32</span>
@@ -515,7 +588,8 @@
 
                 <div class="client">
                     <img src="YOYOLAND.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 33"
+                         alt="Client logo 33"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 33"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 33</span>
@@ -523,7 +597,8 @@
 
                 <div class="client">
                     <img src="ສະຖານບັນການທະນາຄານ.png"
-                         alt="ໂລໂກ້ລູກຄ້າ 34"
+                         alt="Client logo 34"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 34"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 34</span>
@@ -531,7 +606,8 @@
 
                 <div class="client">
                     <img src="ສະຖາບັນສຸສະກະ.jpg"
-                         alt="ໂລໂກ້ລູກຄ້າ 35"
+                         alt="Client logo 35"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 35"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 35</span>
@@ -539,7 +615,8 @@
 
                 <div class="client">
                     <img src="ຮ້ານຄຳ ສົມສະໄໝ.png"
-                         alt="ໂລໂກ້ລູກຄ້າ 36"
+                         alt="Client logo 36"
+                         data-lo-alt="ໂລໂກ້ລູກຄ້າ 36"
                          loading="lazy"
                          onerror="this.parentElement.classList.add('is-empty')">
                     <span>LOGO 36</span>
@@ -564,17 +641,17 @@
     <div class="section-header">
 
         <div>
-            <p class="section-label">
-                ຜົນງານທີ່ຄັດເລືອກ
+            <p class="section-label" data-lo="ຜົນງານທີ່ຄັດເລືອກ">
+                Selected Work
             </p>
 
-            <h2>
-                ຜົນງານຂອງເຮົາ
+            <h2 data-lo="ຜົນງານຂອງເຮົາ">
+                Our Work
             </h2>
         </div>
 
-        <p class="section-description">
-            ລວມໂປຣເຈັກຕັດຕໍ່ວິດີໂອຫຼ້າສຸດຂອງເຮົາ.
+        <p class="section-description" data-lo="ລວມໂປຣເຈັກຕັດຕໍ່ວິດີໂອຫຼ້າສຸດຂອງເຮົາ.">
+            A collection of our latest video editing projects.
         </p>
 
     </div>
@@ -588,16 +665,20 @@
 
         <span class="filter-pill" aria-hidden="true"></span>
 
-        <button class="filter active" data-filter="all">
-            ທັງໝົດ
+        <button class="filter active" data-filter="all" data-lo="ທັງໝົດ">
+            All
         </button>
 
-        <button class="filter" data-filter="video">
-            ຕັດຕໍ່ວິດີໂອ
+        <button class="filter" data-filter="video" data-lo="ຕັດຕໍ່ວິດີໂອ">
+            Video Editing
         </button>
 
-        <button class="filter" data-filter="graphic">
-            ອອກແບບ Graphic
+        <button class="filter" data-filter="graphic" data-lo="ອອກແບບ Graphic">
+            Graphic Design
+        </button>
+
+        <button class="filter" data-filter="event" data-lo="ອີເວັ້ນ">
+            Events
         </button>
 
     </div>
@@ -630,8 +711,8 @@
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 01</h3>
-                <p>TIKTOK / ວິດີໂອສັ້ນ</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 01">Project 01</h3>
+                <p data-lo="TIKTOK / ວິດີໂອສັ້ນ">TIKTOK / SHORT VIDEO</p>
 
             </div>
 
@@ -653,7 +734,7 @@
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 02</h3>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 02">Project 02</h3>
                 <p>INSTAGRAM REELS</p>
 
             </div>
@@ -676,8 +757,8 @@
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 03</h3>
-                <p>ໂຄສະນາ</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 03">Project 03</h3>
+                <p data-lo="ໂຄສະນາ">COMMERCIAL</p>
 
             </div>
 
@@ -699,8 +780,8 @@
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 04</h3>
-                <p>TIKTOK / ວິດີໂອສັ້ນ</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 04">Project 04</h3>
+                <p data-lo="TIKTOK / ວິດີໂອສັ້ນ">TIKTOK / SHORT VIDEO</p>
 
             </div>
 
@@ -722,7 +803,7 @@
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 05</h3>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 05">Project 05</h3>
                 <p>INSTAGRAM REELS</p>
 
             </div>
@@ -745,8 +826,8 @@
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 06</h3>
-                <p>ໂປຣເຈັກອື່ນໆ</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 06">Project 06</h3>
+                <p data-lo="ໂປຣເຈັກອື່ນໆ">OTHER PROJECTS</p>
 
             </div>
 
@@ -757,15 +838,16 @@
             <div class="video-container image-container">
 
                 <img src="graphic1.jpg"
-                     alt="ຜົນງານອອກແບບ Graphic 01"
+                     alt="Graphic design work 01"
+                     data-lo-alt="ຜົນງານອອກແບບ Graphic 01"
                      loading="lazy">
 
             </div>
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 07</h3>
-                <p>ອອກແບບ Graphic / POSTER</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 07">Project 07</h3>
+                <p data-lo="ອອກແບບ Graphic / POSTER">GRAPHIC DESIGN / POSTER</p>
 
             </div>
 
@@ -776,15 +858,16 @@
             <div class="video-container image-container">
 
                 <img src="graphic2.jpg"
-                     alt="ຜົນງານອອກແບບ Graphic 02"
+                     alt="Graphic design work 02"
+                     data-lo-alt="ຜົນງານອອກແບບ Graphic 02"
                      loading="lazy">
 
             </div>
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 08</h3>
-                <p>ອອກແບບ Graphic / BANNER</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 08">Project 08</h3>
+                <p data-lo="ອອກແບບ Graphic / BANNER">GRAPHIC DESIGN / BANNER</p>
 
             </div>
 
@@ -795,21 +878,151 @@
             <div class="video-container image-container">
 
                 <img src="graphic3.jpg"
-                     alt="ຜົນງານອອກແບບ Graphic 03"
+                     alt="Graphic design work 03"
+                     data-lo-alt="ຜົນງານອອກແບບ Graphic 03"
                      loading="lazy">
 
             </div>
 
             <div class="work-info">
 
-                <h3>ຊື່ໂປຣເຈັກ 09</h3>
-                <p>ອອກແບບ Graphic / LOGO</p>
+                <h3 data-lo="ຊື່ໂປຣເຈັກ 09">Project 09</h3>
+                <p data-lo="ອອກແບບ Graphic / LOGO">GRAPHIC DESIGN / LOGO</p>
+
+            </div>
+
+        </article>
+
+
+        <!-- =====================================================
+             EVENTS (data-category="event") — งานที่เรากำลังจะไปถ่าย
+             - คลิกการ์ด → เปิดหน้ารายละเอียด (<dialog> ด้านล่าง ที่ id ตรงกับ data-event)
+             - ป้าย "อีกกี่วัน" นับถอยหลังให้เอง จาก data-event-date (ปี-เดือน-วัน)
+               เลยวันงานแล้วจะเปลี่ยนเป็น "Covered / ຖ່າຍແລ້ວ" เอง
+             - เพิ่มงานใหม่: คัดลอก <article class="event-card"> + <dialog> คู่กันไปวาง
+               แล้วเปลี่ยน data-event / id / data-event-date / รูป / ข้อความ
+        ====================================================== -->
+
+        <article class="work-card event-card spot"
+                 data-category="event"
+                 data-event="event-nongkhai-2026"
+                 tabindex="0"
+                 role="button"
+                 aria-haspopup="dialog"
+                 aria-label="Nongkhai Music Festival 2026 — view details"
+                 data-lo-aria-label="Nongkhai Music Festival 2026 — ເບິ່ງລາຍລະອຽດ">
+
+            <div class="video-container event-container">
+
+                <img src="nong khai fest.jpg"
+                     alt="Nongkhai Music Festival 2026 poster"
+                     data-lo-alt="ໂປສເຕີ Nongkhai Music Festival 2026"
+                     loading="lazy">
+
+                <span class="event-badge">
+                    <i aria-hidden="true"></i>
+                    <span class="event-upcoming" data-lo="ກຳລັງຈະມາ">Upcoming</span>
+                    <span class="event-countdown" data-event-date="2026-11-14"></span>
+                </span>
+
+                <span class="event-date" aria-hidden="true">
+                    <b>14</b>
+                    <span data-lo="ພະຈິກ">Nov</span>
+                    <small>2026</small>
+                </span>
+
+            </div>
+
+            <div class="work-info">
+
+                <h3>Nongkhai Music Festival 2026</h3>
+                <p data-lo="ອີເວັ້ນ · ຖ່າຍຣີວິວ ແລະ ໂປຣໂມດ">EVENT · REVIEW &amp; PROMO SHOOT</p>
+                <span class="event-more" data-lo="ເບິ່ງລາຍລະອຽດ →">View details →</span>
 
             </div>
 
         </article>
 
     </div>
+
+
+    <!-- รายละเอียดอีเว้นท์ (เปิดตอนคลิกการ์ด) -->
+
+    <dialog class="event-modal" id="event-nongkhai-2026" aria-labelledby="event-nongkhai-2026-title">
+
+        <div class="event-modal-inner">
+
+            <button type="button" class="event-close" data-close aria-label="Close" data-lo-aria-label="ປິດ">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+
+            <div class="event-modal-poster">
+                <img class="event-poster-bg" src="nong khai fest.jpg" alt="" aria-hidden="true" loading="lazy">
+                <img src="nong khai fest.jpg"
+                     alt="Nongkhai Music Festival 2026 poster"
+                     data-lo-alt="ໂປສເຕີ Nongkhai Music Festival 2026"
+                     loading="lazy">
+            </div>
+
+            <div class="event-modal-body">
+
+                <span class="event-badge">
+                    <i aria-hidden="true"></i>
+                    <span class="event-upcoming" data-lo="ກຳລັງຈະມາ">Upcoming</span>
+                    <span class="event-countdown" data-event-date="2026-11-14"></span>
+                </span>
+
+                <h3 id="event-nongkhai-2026-title">Nongkhai Music Festival 2026</h3>
+
+                <ul class="event-facts">
+                    <li>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        <span data-lo="14 ພະຈິກ 2026">14 November 2026</span>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span data-lo="ໜອງຄາຍ, ປະເທດໄທ">Nong Khai, Thailand</span>
+                    </li>
+                </ul>
+
+                <p class="event-intro"
+                   data-lo="ທີມງານ BEHIND ຈະໄປຖ່າຍທຳຢູ່ງານ Nongkhai Music Festival 2026 ເກັບທຸກບັນຍາກາດ ທັງເວທີ ແລະ ຜູ້ຄົນ ແລ້ວນຳມາຕັດຕໍ່ເປັນຄອນເທັ້ນສຳລັບສື່ສັງຄົມອອນລາຍ.">
+                    The BEHIND team will be on the ground at Nongkhai Music Festival 2026,
+                    capturing the stages, the crowd and the whole atmosphere, then turning it
+                    into content made for social media.
+                </p>
+
+                <p class="event-label" data-lo="ສິ່ງທີ່ເຮົາຈະໄປຖ່າຍ">What we'll shoot</p>
+
+                <ul class="event-plan">
+                    <li>
+                        <b data-lo="ຖ່າຍຣີວິວງານ">Event review</b>
+                        <span data-lo="ຄລິບຣີວິວບັນຍາກາດຈິງພາຍໃນງານ.">Review clips that show what the festival is really like.</span>
+                    </li>
+                    <li>
+                        <b data-lo="ວິດີໂອໂປຣໂມດ">Promo videos</b>
+                        <span data-lo="ຄລິບສັ້ນໂປຣໂມດ ສຳລັບ TikTok, Reels ແລະ Facebook.">Short promo clips for TikTok, Reels and Facebook.</span>
+                    </li>
+                    <li>
+                        <b data-lo="ຄລິບໄຮໄລທ໌">Highlights</b>
+                        <span data-lo="ລວມຊ່ວງເວລາທີ່ດີທີ່ສຸດຂອງງານ.">The best moments of the night in one video.</span>
+                    </li>
+                    <li>
+                        <b data-lo="ເບື້ອງຫຼັງ">Behind the scenes</b>
+                        <span data-lo="ເກັບພາບເບື້ອງຫຼັງເວທີ ແລະ ຜູ້ຄົນ.">What happens behind the stage and in the crowd.</span>
+                    </li>
+                </ul>
+
+                <div class="event-cta">
+                    <p data-lo="ຢາກໃຫ້ເຮົາໄປຖ່າຍງານຂອງທ່ານບໍ?">Want us to cover your event?</p>
+                    <a href="#contact" class="button button-light" data-close data-lo="ຕິດຕໍ່ເຮົາ">Contact us</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </dialog>
 
 </section>
 
@@ -824,13 +1037,13 @@
 
         <div>
 
-            <p class="section-label">
-                ບໍລິການຂອງເຮົາ
+            <p class="section-label" data-lo="ບໍລິການຂອງເຮົາ">
+                Our Services
             </p>
 
-            <h2>
-                ເຮົາສ້າງ<br>
-                <span>ຫຍັງແດ່.</span>
+            <h2 data-lo="ເຮົາສ້າງ<br><span>ຫຍັງແດ່.</span>">
+                What we<br>
+                <span>create.</span>
             </h2>
 
         </div>
@@ -853,11 +1066,11 @@
                 <span class="bento-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
                 </span>
-                <h3>ຕັດຕໍ່ວິດີໂອ</h3>
+                <h3 data-lo="ຕັດຕໍ່ວິດີໂອ">Video Editing</h3>
             </div>
 
-            <p>
-                ການຕັດຕໍ່ຈັງຫວະໄວ ອອກແບບມາເພື່ອດຶງດູດຄວາມສົນໃຈ ແລະ ເຮັດໃຫ້ຜູ້ຊົມເບິ່ງຈົນຈົບ ແບບມືອາຊີບ ສຳລັບຄຣີເອເຕີ, ອິນຟລູເອັນເຊີ ແລະ ທຸລະກິດ.
+            <p data-lo="ການຕັດຕໍ່ຈັງຫວະໄວ ອອກແບບມາເພື່ອດຶງດູດຄວາມສົນໃຈ ແລະ ເຮັດໃຫ້ຜູ້ຊົມເບິ່ງຈົນຈົບ ແບບມືອາຊີບ ສຳລັບຄຣີເອເຕີ, ອິນຟລູເອັນເຊີ ແລະ ທຸລະກິດ.">
+                Fast-paced edits built to grab attention and keep viewers watching to the end, professionally crafted for creators, influencers and businesses.
             </p>
 
         </div>
@@ -870,11 +1083,11 @@
                 <span class="bento-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
                 </span>
-                <h3>ອອກແບບ Graphic</h3>
+                <h3 data-lo="ອອກແບບ Graphic">Graphic Design</h3>
             </div>
 
-            <p>
-                ອອກແບບສື່ Poster, Banner, Logo ໃຫ້ຕົງກັບເເບຣນຂອງທ່ານ.
+            <p data-lo="ອອກແບບສື່ Poster, Banner, Logo ໃຫ້ຕົງກັບເເບຣນຂອງທ່ານ.">
+                Posters, banners and logos designed to match your brand.
             </p>
 
         </div>
@@ -887,11 +1100,11 @@
                 <span class="bento-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
                 </span>
-                <h3>ຖ່າຍຣີວິວສິນຄ້າ</h3>
+                <h3 data-lo="ຖ່າຍຣີວິວສິນຄ້າ">Product Review Shoots</h3>
             </div>
 
-            <p>
-                ຖ່າຍໂປຣໂມດສິນຄ້າຂອງທ່ານ ແລະ ດຶງດູດລູກຄ້າໃຫ້ສົນໃຈ.
+            <p data-lo="ຖ່າຍໂປຣໂມດສິນຄ້າຂອງທ່ານ ແລະ ດຶງດູດລູກຄ້າໃຫ້ສົນໃຈ.">
+                Promotional shoots for your products that draw customers in.
             </p>
 
         </div>
@@ -904,11 +1117,11 @@
                 <span class="bento-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
                 </span>
-                <h3>ຄິດຄົ້ນຄອນເທັ້ນ</h3>
+                <h3 data-lo="ຄິດຄົ້ນຄອນເທັ້ນ">Content Ideas</h3>
             </div>
 
-            <p>
-                ວາງແຜນເນື້ອຫາໄອເດຍສ້າງສັນຕົງກຸ່ມເປົ້າໝາຍ.
+            <p data-lo="ວາງແຜນເນື້ອຫາໄອເດຍສ້າງສັນຕົງກຸ່ມເປົ້າໝາຍ.">
+                Creative content planning that speaks to your target audience.
             </p>
 
         </div>
@@ -921,11 +1134,11 @@
                 <span class="bento-icon">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
                 </span>
-                <h3>ພາກສຽງ</h3>
+                <h3 data-lo="ພາກສຽງ">Voice-over</h3>
             </div>
 
-            <p>
-                ສຽງບັນຍາຍຄຸນນະພາບ, ສຽງພາກໂຄສະນາ ເເລະ ສຽງປະກອບຕ່າງໆ.
+            <p data-lo="ສຽງບັນຍາຍຄຸນນະພາບ, ສຽງພາກໂຄສະນາ ເເລະ ສຽງປະກອບຕ່າງໆ.">
+                Quality narration, commercial voice-overs and sound effects.
             </p>
 
         </div>
@@ -946,35 +1159,36 @@
         <!-- PUT YOUR PHOTO HERE -->
 
         <img src="team.png"
-             alt="ທີມງານຂອງເຮົາ">
+             alt="Our team"
+             data-lo-alt="ທີມງານຂອງເຮົາ">
 
     </div>
 
 
     <div class="about-content">
 
-        <p class="section-label">
-            ກ່ຽວກັບເຮົາ
+        <p class="section-label" data-lo="ກ່ຽວກັບເຮົາ">
+            About Us
         </p>
 
-        <h2>
-            ການຕັດຕໍ່ບໍ່ແມ່ນພຽງ<br>
-            ແຕ່ <span>ການຕັດ.</span>
+        <h2 data-lo="ການຕັດຕໍ່ບໍ່ແມ່ນພຽງ<br>ແຕ່ <span>ການຕັດ.</span>">
+            Editing is more<br>
+            than <span>cutting.</span>
         </h2>
 
-        <p>
-            ເຮົາແມ່ນທີມຕັດຕໍ່ວິດີໂອສາຍຄຣີເອທີບ ທີ່ເນັ້ນສ້າງ
-            ຄອນເທັ້ນທີ່ໜ້າສົນໃຈສຳລັບສື່ສັງຄົມອອນລາຍ.
+        <p data-lo="ເຮົາແມ່ນທີມຕັດຕໍ່ວິດີໂອສາຍຄຣີເອທີບ ທີ່ເນັ້ນສ້າງ ຄອນເທັ້ນທີ່ໜ້າສົນໃຈສຳລັບສື່ສັງຄົມອອນລາຍ.">
+            We're a creative video editing team focused on making
+            engaging content for social media.
         </p>
 
-        <p>
-            ຕັ້ງແຕ່ຟຸດເຕດິບຈົນເຖິງການອັບໂຫຼດສຸດທ້າຍ
-            ເຮົາຊ່ວຍໃຫ້ຄຣີເອເຕີ ແລະ ທຸລະກິດ ປ່ຽນໄອເດຍຂອງຕົນ
-            ໃຫ້ກາຍເປັນຄອນເທັ້ນທີ່ຄົນຢາກເບິ່ງ.
+        <p data-lo="ຕັ້ງແຕ່ຟຸດເຕດິບຈົນເຖິງການອັບໂຫຼດສຸດທ້າຍ ເຮົາຊ່ວຍໃຫ້ຄຣີເອເຕີ ແລະ ທຸລະກິດ ປ່ຽນໄອເດຍຂອງຕົນ ໃຫ້ກາຍເປັນຄອນເທັ້ນທີ່ຄົນຢາກເບິ່ງ.">
+            From raw footage to the final upload, we help creators
+            and businesses turn their ideas into content
+            people want to watch.
         </p>
 
-        <a href="#contact" class="text-link">
-            ຮ່ວມງານກັບເຮົາ
+        <a href="#contact" class="text-link" data-lo="ຮ່ວມງານກັບເຮົາ">
+            Work With Us
         </a>
 
     </div>
@@ -990,13 +1204,13 @@
 
     <div class="cta-card">
 
-        <h2>
-            ມາສ້າງສື່ອອນລາຍ<br>
-            <span>ນຳກັນ.</span>
+        <h2 data-lo="ມາສ້າງສື່ອອນລາຍ<br><span>ນຳກັນ.</span>">
+            Let's create something<br>
+            <span>together.</span>
         </h2>
 
-        <a href="#contact" class="button button-light">
-            ເລີ່ມໂປຣເຈັກ
+        <a href="#contact" class="button button-light" data-lo="ເລີ່ມໂປຣເຈັກ">
+            Start a Project
         </a>
 
     </div>
@@ -1012,12 +1226,12 @@
 
     <div class="contact-heading">
 
-        <h2>
-            <span>ຕິດຕໍ່ສອບຖາມ.</span>
+        <h2 data-lo="<span>ຕິດຕໍ່ສອບຖາມ.</span>">
+            <span>Get in touch.</span>
         </h2>
 
-        <p class="quick-label">
-            ທັກຫາເຮົາໄດ້ທີ່
+        <p class="quick-label" data-lo="ທັກຫາເຮົາໄດ້ທີ່">
+            Message us on
         </p>
 
         <div class="quick-links">
@@ -1058,7 +1272,8 @@
     <div class="footer-brand">
 
         <img src="Behind.jpeg"
-             alt="ໂລໂກ້">
+             alt="BEHIND logo"
+             data-lo-alt="ໂລໂກ້">
 
         <span>
             BEHIND-ເບື້ອງຫຼັງ
@@ -1067,8 +1282,8 @@
     </div>
 
 
-    <p>
-        © 2026 BEHIND-ເບື້ອງຫຼັງ. ສະຫງວນລິຂະສິດ.
+    <p data-lo="© 2026 BEHIND-ເບື້ອງຫຼັງ. ສະຫງວນລິຂະສິດ.">
+        © 2026 BEHIND-ເບື້ອງຫຼັງ. All rights reserved.
     </p>
 
 </footer>
