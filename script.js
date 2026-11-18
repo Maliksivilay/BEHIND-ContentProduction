@@ -6,6 +6,8 @@ const DEFAULT_LANG = "en";   // ภาษาตอนเปิดเว็บค
 
 const LITE_MODE = "auto";    // โหมดประหยัดเครื่อง: "auto" = ตรวจเครื่องให้เอง, "on" = เปิดตลอด (ลองดูว่าเครื่องช้าเห็นแบบไหน), "off" = ปิด
 
+const SCROLL_FX = "flip";    // ลูกเล่นตอนเลื่อนลง: "flip" (พลิก 3 มิติ) — แบบอื่น: "fade-up", "zoom", "blur", "slide", "cinematic", "none" (ปิด)
+
 
 const root = document.documentElement;
 
@@ -956,3 +958,125 @@ if (canvas && ctx) {
     }
 
 }
+
+
+/* =========================================================
+   SCROLL EFFECTS — ลูกเล่นตอนเลื่อนลงมาแต่ละช่วง
+   - เลือกแบบที่ SCROLL_FX (ด้านบนสุดของไฟล์) — ตอนนี้ใช้ "flip" พลิก 3 มิติ
+   - หัวข้อ / ข้อความ / การ์ด / โลโก้ จะค่อย ๆ โผล่ทีละชิ้นเมื่อเลื่อนมาถึง
+========================================================= */
+
+(() => {
+
+    /* ชิ้นที่จะมีลูกเล่น (ไม่รวมหน้าแรก hero ที่มีแอนิเมชันของตัวเองอยู่แล้ว) */
+
+    const TARGETS = [
+        "section:not(.hero):not(.cta) .section-label",
+        "section:not(.hero):not(.cta) h2",
+        ".section-description",
+        ".intro-text", ".chips", ".intro-image",
+        ".client",
+        ".filters", ".work-card",
+        ".service-item",
+        ".about-image", ".about-content > p:not(.section-label)", ".process-step", ".about-content .text-link",
+        ".cta-card",
+        ".quick-label", ".quick"
+    ].join(",");
+
+    const items = [...document.querySelectorAll(TARGETS)].filter(el => !el.closest("dialog, .hero"));
+
+    if (!items.length) return;
+
+    const supported = "IntersectionObserver" in window && !reduceMotion;
+
+    const fx = SCROLL_FX;
+
+
+    /* เตรียม: ทิศทางสไลด์ (สลับซ้าย/ขวา) + กันจอเลื่อนซ้ายขวาตอนสไลด์ */
+
+    items.forEach(el => {
+
+        const siblings = [...el.parentElement.children];
+
+        el.style.setProperty("--fx-x", (siblings.indexOf(el) % 2 ? 70 : -70) + "px");
+
+        const section = el.closest("section");
+
+        if (section) section.classList.add("fx-clip");
+
+    });
+
+
+    /* เข้าจอ → เล่นทีละชิ้น ไล่ตามลำดับบนลงล่าง (หน่วงชิ้นละ 0.09 วิ) */
+
+    const observer = supported ? new IntersectionObserver(entries => {
+
+        const entering = entries
+            .filter(entry => entry.isIntersecting)
+            .map(entry => entry.target)
+            .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
+
+        entering.forEach((el, i) => {
+
+            observer.unobserve(el);
+
+            el.style.setProperty("--fx-delay", Math.min(i, 8) * 90 + "ms");
+
+            el.classList.add("fx-in");
+            el.classList.remove("fx-pending");
+
+        });
+
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.1 }) : null;
+
+
+    /* เล่นจบ → ล้าง class ออก (hover ของการ์ด/โลโก้ จะกลับมาทำงานปกติ) */
+
+    document.addEventListener("animationend", e => {
+
+        const el = e.target;
+
+        if (!el.classList || !el.classList.contains("fx-in") || !e.animationName.startsWith("fx-")) return;
+
+        el.classList.remove("fx-in");
+        el.style.removeProperty("--fx-delay");
+
+    });
+
+
+    /* เริ่ม: ซ่อนทุกชิ้นไว้รอ แล้วคอยดูว่าเลื่อนมาถึงหรือยัง */
+
+    root.dataset.fx = fx;
+
+    if (observer && fx !== "none") {
+
+        items.forEach(el => {
+
+            el.classList.add("fx-pending");
+
+            observer.observe(el);
+
+        });
+
+    }
+
+
+    /* กดปุ่มกรองผลงาน → การ์ดผลงานใช้แอนิเมชันของปุ่มกรองแทน */
+
+    document.querySelectorAll(".filter").forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            document.querySelectorAll(".work-card.fx-pending, .work-card.fx-in").forEach(card => {
+
+                if (observer) observer.unobserve(card);
+
+                card.classList.remove("fx-pending", "fx-in");
+
+            });
+
+        });
+
+    });
+
+})();
