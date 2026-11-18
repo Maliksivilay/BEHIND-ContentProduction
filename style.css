@@ -178,6 +178,12 @@ h2 span {
     font-size: 15px;
 }
 
+/* คำอธิบายยาว ๆ ข้างหัวข้อ (Work, Services) — กว้างกว่าปกติ */
+.section-description.wide {
+    max-width: 520px;
+    text-wrap: pretty;
+}
+
 .button {
     position: relative;
     overflow: hidden;
@@ -833,6 +839,21 @@ html.split .hero-scroll:hover {
 
     color: var(--muted);
     font-size: 17px;
+    text-wrap: pretty;          /* ตัดบรรทัดให้สวย ไม่เหลือคำเดียวโดดๆ บรรทัดสุดท้าย */
+}
+
+/* nw = no-wrap : กลุ่มคำ (ภาษาลาว) ที่ห้ามตัดขึ้นบรรทัดใหม่กลางคำ
+   ใช้ <span class='nw'>...</span> ครอบวลีที่ต้องอยู่ด้วยกัน
+   และ <wbr> = จุดที่ "อนุญาต" ให้ขึ้นบรรทัดใหม่ได้ */
+.nw {
+    white-space: nowrap;
+}
+
+/* .nw ในหัวข้อ h2 — ไม่ให้โดนสไตล์ไล่สี (h2 span) ไปด้วย
+   (ถ้าอยู่ในส่วนไล่สี ก็ยังเห็นสีไล่ของตัวแม่ตามปกติ) */
+h2 .nw {
+    background: none;
+    color: inherit;
 }
 
 .chips {
@@ -894,9 +915,10 @@ html.split .hero-scroll:hover {
     padding-inline: var(--pad-x);
 }
 
+/* minmax(0, 1fr) = ให้คอลัมน์หดได้จริง ไม่โดนขนาดรูปโลโก้ดันจนล้นจอ */
 .clients-marquee {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 18px;
     padding: 28px var(--pad-x) 0;
 }
@@ -913,6 +935,7 @@ html.split .hero-scroll:hover {
 
 .client {
     position: relative;
+    min-width: 0;
 
     aspect-ratio: 16 / 10;
 
@@ -940,6 +963,8 @@ html.split .hero-scroll:hover {
 .client img {
     width: 100%;
     height: 100%;
+    min-width: 0;
+    max-width: 100%;
     object-fit: contain;
 }
 
@@ -964,7 +989,7 @@ html.split .hero-scroll:hover {
 
 
 @media (max-width: 1100px) and (min-width: 801px) {
-    .clients-marquee { grid-template-columns: repeat(4, 1fr); }
+    .clients-marquee { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 /* =========================================================
@@ -1087,6 +1112,15 @@ html.split .hero-scroll:hover {
 
 .work-card.show {
     animation: cardIn 0.5s var(--ease) both;
+}
+
+/* ลิงก์คลุมทั้งการ์ด — กดตรงไหนของการ์ดก็เปิดคลิปใน TikTok (แท็บใหม่) */
+.work-link {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+
+    border-radius: inherit;
 }
 
 @keyframes cardIn {
@@ -1574,9 +1608,10 @@ html[lang="lo"] .event-badge {
     border-top: 1px solid var(--line);
 }
 
+/* 4 การ์ด = ตาราง 2 x 2 */
 .service-list {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
@@ -1584,8 +1619,6 @@ html[lang="lo"] .event-badge {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-
-    grid-column: span 2;
 
     display: flex;
     flex-direction: column;
@@ -1597,10 +1630,6 @@ html[lang="lo"] .event-badge {
     background: var(--glass);
 
     transition: border-color 0.4s, transform 0.5s var(--ease);
-}
-
-.service-item:nth-child(-n+2) {
-    grid-column: span 3;
 }
 
 .service-item:hover {
@@ -1641,12 +1670,37 @@ html[lang="lo"] .event-badge {
     line-height: 1.35;
 }
 
+/* ชื่อบริการภาษาลาว ใต้หัวข้อภาษาอังกฤษ */
+.service-item h3 small {
+    display: block;
+    margin-top: 2px;
+
+    color: var(--accent-soft);
+    font-size: 14px;
+    font-weight: 600;
+}
+
 .service-item p {
-    max-width: 460px;
+    max-width: 520px;
     margin-top: 14px;
 
     color: var(--muted);
     font-size: 14.5px;
+    text-wrap: pretty;
+}
+
+/* "ບໍລິການທີ່ຄອບຄຸມ:" — แยกด้วยเส้นบาง ๆ */
+.service-item .service-scope {
+    padding-top: 14px;
+
+    border-top: 1px solid var(--line);
+
+    font-size: 13.5px;
+}
+
+.service-scope strong {
+    color: #fff;
+    font-weight: 600;
 }
 
 /* ---------- ภาพประกอบเล็ก ๆ ในการ์ด ---------- */
@@ -1890,6 +1944,87 @@ html[lang="lo"] .event-badge {
     font-size: clamp(34px, 4.4vw, 56px);
 }
 
+/* หัวข้อภาษาลาว: "ທ່ານມີລະບົບການເຮັດວຽກທີ່ຊັດເຈນ" ต้องอยู่บรรทัดเดียว
+   → ขนาดตัวอักษรปรับตามความกว้างกล่องเอง (ยาวประมาณ 13 เท่าของขนาดตัวอักษร)
+   ถ้าแก้ข้อความหัวข้อนี้ให้ยาวขึ้น ให้ลดเลข 7.4cqi ลง */
+.about-content {
+    container-type: inline-size;
+}
+
+html[lang="lo"] .about-content h2 {
+    font-size: clamp(20px, 3vw, 44px);
+}
+
+@supports (font-size: 1cqi) {
+    html[lang="lo"] .about-content h2 {
+        font-size: min(44px, 7.4cqi);
+    }
+}
+
+/* ---------- ขั้นตอนการทำงาน (Work Process) ---------- */
+
+.process {
+    display: grid;
+    gap: 12px;
+
+    max-width: 520px;
+    margin-top: 30px;
+
+    list-style: none;
+}
+
+.process-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 16px;
+
+    padding: 16px 18px;
+
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--glass);
+
+    transition: border-color 0.3s, transform 0.4s var(--ease);
+}
+
+.process-step:hover {
+    border-color: var(--line-2);
+    transform: translateX(4px);
+}
+
+.process-num {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--line-2);
+    border-radius: 11px;
+    background: rgba(var(--accent-rgb), 0.12);
+
+    color: var(--accent-soft);
+    font-size: 13px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.process-step h3 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.process-step p {
+    margin-top: 4px;
+
+    color: var(--muted);
+    font-size: 14.5px;
+    text-wrap: pretty;
+}
+
 .text-link {
     display: inline-flex;
     align-items: center;
@@ -1984,8 +2119,14 @@ html[lang="lo"] .event-badge {
     line-height: 1.2;
 }
 
-.cta .button {
-    margin-top: 40px;
+/* ข้อความใต้หัวข้อ CTA (แทนปุ่ม "Start a Project") */
+.cta-text {
+    max-width: 560px;
+    margin: 28px auto 0;
+
+    color: var(--muted);
+    font-size: clamp(15px, 1.6vw, 18px);
+    text-wrap: pretty;
 }
 
 
@@ -2098,18 +2239,6 @@ footer p {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .service-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .service-item,
-    .service-item:nth-child(-n+2) {
-        grid-column: span 1;
-    }
-
-    .service-item:nth-child(1) {
-        grid-column: span 2;
-    }
 }
 
 
@@ -2183,8 +2312,8 @@ footer p {
     }
 
     .clients-marquee {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
     }
 
     .client {
@@ -2253,11 +2382,6 @@ footer p {
         grid-template-columns: 1fr;
     }
 
-    .service-item,
-    .service-item:nth-child(1) {
-        grid-column: span 1;
-    }
-
     .hero-buttons {
         flex-direction: column;
         align-items: stretch;
@@ -2295,6 +2419,65 @@ html.lite .v-shapes i {
 
 html.lite .intro-image::before {
     filter: none;
+}
+
+
+/* =========================================================
+   SCROLL EFFECTS — ลูกเล่นตอนเลื่อนลง (เลือกแบบใน script.js → SCROLL_FX)
+   .fx-pending = ยังไม่ถึง (ซ่อนรอไว้)   .fx-in = กำลังโผล่ขึ้นมา
+========================================================= */
+
+.fx-clip {
+    overflow-x: clip;   /* ตอนสไลด์เข้าจากข้าง ๆ จะได้ไม่มีแถบเลื่อนซ้าย-ขวา */
+}
+
+.fx-pending {
+    opacity: 0;
+}
+
+.fx-in {
+    animation: var(--fx-name, fx-fade-up) var(--fx-dur, 0.9s) var(--ease) var(--fx-delay, 0s) both;
+}
+
+html[data-fx="fade-up"]   { --fx-name: fx-fade-up; }
+html[data-fx="zoom"]      { --fx-name: fx-zoom;      --fx-dur: 1s; }
+html[data-fx="blur"]      { --fx-name: fx-blur;      --fx-dur: 1.1s; }
+html[data-fx="slide"]     { --fx-name: fx-slide;     --fx-dur: 1s; }
+html[data-fx="cinematic"] { --fx-name: fx-cinematic; --fx-dur: 1.2s; }
+html[data-fx="flip"]      { --fx-name: fx-flip;      --fx-dur: 1.1s; }
+
+/* เครื่องสเปกต่ำ: เบลอกินเครื่อง → ใช้ลอยขึ้นแทน */
+html.lite[data-fx="blur"] { --fx-name: fx-fade-up; }
+
+@keyframes fx-fade-up {
+    from { opacity: 0; translate: 0 48px; }
+    to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes fx-zoom {
+    from { opacity: 0; scale: 0.86; }
+    to   { opacity: 1; scale: 1; }
+}
+
+@keyframes fx-blur {
+    from { opacity: 0; filter: blur(16px); translate: 0 20px; }
+    to   { opacity: 1; filter: blur(0);    translate: 0 0; }
+}
+
+@keyframes fx-slide {
+    from { opacity: 0; translate: var(--fx-x, -70px) 0; }
+    to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes fx-cinematic {
+    0%   { opacity: 0; translate: 0 60px; clip-path: inset(100% -10% -20% -10%); }
+    40%  { opacity: 1; }
+    100% { opacity: 1; translate: 0 0;    clip-path: inset(-20% -10% -20% -10%); }
+}
+
+@keyframes fx-flip {
+    from { opacity: 0; transform: perspective(1000px) rotateX(-32deg) translateY(40px); transform-origin: 50% 0; }
+    to   { opacity: 1; transform: perspective(1000px) rotateX(0)      translateY(0);    transform-origin: 50% 0; }
 }
 
 
